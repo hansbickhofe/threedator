@@ -13,7 +13,7 @@ var PORT = process.env.PORT || 3000;
 io.on('connection', function(socket){
 
   //socket.broadcast.emit('hi');
-
+  
   //Color
   socket.on('channelname', function(msg){
     //console.log('message: ' + msg);
