@@ -1,6 +1,6 @@
 {
 name: "threedator",
-description: "A sample application using NodeJS ",
+description: "A Realtime Multiplayer sample application using NodeJS ",
 readme: "README.md",
 license: "MIT License (MIT)",
 repository: {
