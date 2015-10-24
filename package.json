@@ -1,13 +1,23 @@
 {
-name: "threedator",
-description: "A Realtime Multiplayer sample application using NodeJS ",
-readme: "README.md",
-license: "MIT License (MIT)",
-repository: {
-type: "git",
-url: "https://github.com/hansbickhofe/threedator.git"
-},
-dependencies: {
-redis: "*"
-}
+  "name": "Socket_Server",
+  "version": "0.0.1",
+  "description": "POC for socket io with Unity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rudy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teyou/Unity_POC_Socket.git"
+  },
+  "author": "rudy",
+  "license": "",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.3.6",
+    "socket.io-client": "^1.3.6"
+  }
 }
