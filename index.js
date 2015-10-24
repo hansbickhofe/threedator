@@ -9,8 +9,6 @@
 
 var io = require('socket.io')(http);
 var PORT = process.env.PORT || 3000;
-var http = require('http').createServer(app);
-
 
 io.on('connection', function(socket){
 
