@@ -6,7 +6,7 @@ using UnityEngine;
 using SocketIO;
 using UnityEngine.UI;
 
-public class TestSocketIO : MonoBehaviour
+public class TDSocketIO : MonoBehaviour
 {
 	private SocketIOComponent socket;
 
