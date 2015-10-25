@@ -1,0 +1,6 @@
+{% extends "pagebase.html" %}
+	{% block content %}
+	{% for score in scores %}
+{{ loop.index }}: {{ score.name }} {{ score.character }} {{ score.crew }} {{ score.cargo }}<br>
+	{% endfor %}
+	{% endblock %}
