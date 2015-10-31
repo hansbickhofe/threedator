@@ -8,35 +8,19 @@ handlers:
 - url: /admin.*
   script: admin.app
   secure: always
- 
-- url: /repair.*
-  script: repair.app
-  secure: always
-  
-- url: /objects.*
-  script: objects.app
-  secure: always  
 
 - url: /ships.*
   script: ships.app
-  secure: always  
-  
-- url: /pos.*
-  script: pos.app
   secure: always
-  
+
 - url: /hit.*
   script: hit.app
-  secure: always  
-  
-- url: /create.*
-  script: genobjects.app
-  secure: always  
-  
+  secure: always
+
 - url: .*
   script: main.app
   secure: always
-  
+
 libraries:
 - name: webapp2
   version: latest

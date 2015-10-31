@@ -1,4 +1,0 @@
-cron:
-- description: repairships (1min)
-  url: /repair 
-  schedule: every 1 minutes  

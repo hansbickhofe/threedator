@@ -32,7 +32,7 @@ class MainHandler(webapp2.RequestHandler):
 				response.append(checkResponse)
 		else: 
 			isEmptyResponse = { 
-			'status': "noayeaye",
+			'status': "NACK",
 			'reason': 'No Name Entered',
 			}
 			response.append(isEmptyResponse)
@@ -42,13 +42,11 @@ class MainHandler(webapp2.RequestHandler):
 
 class CheckNameHandler(webapp2.RequestHandler):
 	def post(self):
-
 		if self.request.get('name') and self.request.get('secret'):
 			name = cgi.escape(self.request.get('name'))
 			secret = cgi.escape(self.request.get('secret'))
 			loginok = Ship.loginShip(name,secret)
 
-			
 			self.response.headers['Content-Type'] = 'application/json'
 			self.response.out.write(json.encode(loginok))	
 		
@@ -58,8 +56,6 @@ class SaveHandler(webapp2.RequestHandler):
 		if self.request.get('name') and self.request.get('character'):
 			name = cgi.escape(self.request.get('name')).upper()
 			character = cgi.escape(self.request.get('character')).lower()
-			pos = "50.954765068842214,6.9388034110451144"
-			heading = 0.01
 			newship = Ship.saveShipConfig(name,character,pos,heading)
 			
 			if len(newship) >=1 :
