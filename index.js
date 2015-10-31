@@ -16,26 +16,37 @@ var PORT = process.env.PORT || 3000;
 app.use(express.static(__dirname + '/public'));
 
 app.get('/',function(req,res){
-	//res.send('<h1>Hello World</h1>');
-	res.sendFile(__dirname + '/public/index.html');
+        res.sendFile(__dirname + '/public/index.html');
 });
 
 io.on('connection', function(socket){
 
-  //socket.broadcast.emit('hi');
-  
-  //Color
+  //recv Pos
   socket.on('channelname', function(msg){
-    //console.log('message: ' + msg);
     if(msg){
       console.log('channelname: (' + msg.id + "," + msg.xPos + "," + msg.yPos + "," + msg.time +")");
     }
     io.emit('channelname',msg);
   });
-  
+
+  //got hit
+  socket.on('fire', function(msg){
+    if(msg){
+      console.log('fire: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+    }
+    io.emit('fire',msg);
+  });
+
+  //logon from user (failed for testing)
+  socket.on('logon', function(msg){
+    if(msg){
+      console.log('logon failed: (' + msg.login + "," + msg.password + ")");
+    }
+    io.emit('logonnack',msg.login);
+  });
 });
 
 
 http.listen(PORT,function(){
-	console.log('listening on *:'+ PORT);
+        console.log('listening on *:'+ PORT);
 });

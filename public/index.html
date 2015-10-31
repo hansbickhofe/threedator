@@ -23,9 +23,9 @@
       <input type="text" size=10 id="login" value="PLAYERNAME"/>
       <br>
       Password<BR>
-      <input type="password" size=10 id="targetid" />
+      <input type="password" size=10 id="password" />
       <br>
-      <button id='fire'/>Logon</button><br><br>
+      <button id='logon'/>Logon</button><br><br>
       <hr>
       FIRE:
       ShipID<BR>
@@ -61,6 +61,11 @@
 
     $(document).ready(function(e) {
 
+    $('#logon').click(function(e) {
+      var sendlogon = {login: $('#login').val(), password: $('#password').val()};
+      socket.emit('logon', sendlogon);
+    });
+
     $('#fire').click(function(e) {
       var sendshot = {id: $('#shipid').val(), tid: $('#targetid').val(), time: 0};
       socket.emit('fire', sendshot);
@@ -85,6 +90,16 @@
     });
 
     socket.on('fire', function(msg){
+      $("#C").append(msg);
+      syncInputVal(msg);
+    });
+
+    socket.on('logonnack', function(msg){
+      $("#C").append(msg);
+      syncInputVal(msg);
+    });
+
+    socket.on('logonack', function(msg){
       $("#C").append(msg);
       syncInputVal(msg);
     });

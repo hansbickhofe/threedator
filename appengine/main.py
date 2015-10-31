@@ -38,22 +38,6 @@ class MainHandler(Handler):
         self.render('pagecontent.html', pageheader = "3!", pagetitle = "Threedator")
 
 
-class ScoresHandler(Handler):
-    def get(self):
-		scores = []
-		shipscores = Ship.showScores()
-		logging.info(shipscores)
-		for ship in shipscores:
-			score = {
-			'name': ship["name"],
-			'character': ship["character"],
-			'cargo': ship["cargo"],
-			'crew': ship["crew"],
-			}
-			scores.append(score)
-		self.render('pagescore.html', pageheader = "ARR!", pagetitle = "ARR_2.0 Alpha", scores = scores)
-
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/scores', ScoresHandler),
 ], debug=True)
