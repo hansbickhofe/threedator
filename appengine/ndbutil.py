@@ -25,6 +25,7 @@ class Settings():
 	timeoutShowShip = 300
 	rndRadius = 0.0400
 	ammodefault = 5
+	
 
 def getRandomPhrase():
 	words = [line.strip() for line in open('words.txt')]
