@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour {
 
+	public GameObject ErrorTxt;
+
 	public string pName;
 	public string pTeam;
 	public string pID;
@@ -17,8 +19,7 @@ public class Settings : MonoBehaviour {
 	InputField InputPW;
 	InputField InputRoomID;
 	InputField InputUrl;
-
-	// Use this for initialization
+	
 	void Start () {
 		//access input fields
 		InputName = GameObject.Find("InputFieldPlayer").GetComponent<InputField>();
@@ -28,8 +29,11 @@ public class Settings : MonoBehaviour {
 		InputRoomID = GameObject.Find("InputFieldRoomID").GetComponent<InputField>();
 		InputUrl = GameObject.Find("InputFieldURL").GetComponent<InputField>();
 
-		//set default url
-		InputUrl.placeholder.GetComponent<Text>().text = url;
+		//reset error message
+		ErrorTxt.GetComponent<Text>().text = "";
+
+		//set values
+		ReadLocalPrefs();
 	}
 
 	public void SetFormData(){
@@ -52,7 +56,20 @@ public class Settings : MonoBehaviour {
 		PlayerPrefs.SetString("URL", url);
 	}
 
+	public void ClearScores(){
+		//
+	}
+
 	public void StartGame(){
 		Application.LoadLevel ("Threedator");
+	}
+
+	void ReadLocalPrefs(){
+		InputName.text = PlayerPrefs.GetString("PLAYER");
+		InputTeam.text = PlayerPrefs.GetString("TEAM");
+		InputID.text = PlayerPrefs.GetString("ID");
+		InputPW.text = PlayerPrefs.GetString("PASSWORD");
+		InputRoomID.text = PlayerPrefs.GetString("ROOM");
+		InputUrl.text = PlayerPrefs.GetString("URL");
 	}
 }

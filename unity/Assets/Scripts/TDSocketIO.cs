@@ -10,6 +10,10 @@ public class TDSocketIO : MonoBehaviour
 {
 	private SocketIOComponent socket;
 
+	//touch
+	RaycastHit hit;
+	Ray ray;
+
 	//process data
 	List<Ship> allShips = new List<Ship>();
 	int arraySize;
@@ -49,14 +53,17 @@ public class TDSocketIO : MonoBehaviour
 		zPos += Input.GetAxis ("Vertical") * speed;
 
 		//mouse move
-		RaycastHit hit;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Input.GetMouseButtonDown(0)){
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		}
+
 
 		//touch
 		if (Input.touchCount > 0){
 			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 		}
 
+		// ray hit test
 		if (Physics.Raycast(ray, out hit)){
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
 				xPos = hit.point.x;
