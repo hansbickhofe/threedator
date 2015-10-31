@@ -10,10 +10,6 @@ handlers:
   script: ships.app
   secure: always
 
-- url: /hit.*
-  script: hit.app
-  secure: always
-
 - url: .*
   script: main.app
   secure: always
