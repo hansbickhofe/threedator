@@ -1,17 +1,27 @@
+################ Step 1
 App Start:
-A: Socket connect: -> emit Login/Pass -> N:
+A: Socket connect: -> emit (logon) Login/Pass -> N:
 N: request Login/Pass -> BE:
+
 BE: Name/Pass Hashcheck - 1: ok - respond Login ACK plus Score -> N:
 						- 2: not ok - respond Login NACK -> N:
-N: 1: emit Score -> A:
-N: 2: emit Login failes -> A:
+N: 1: emit (logonack +json score) Score -> A:
+N: 2: emit (logonnack) Login failed -> A:
+
 A: 1: Begin Game
 A: 2: Display Loginerror
-A: Begin Game (Set Target): emit PlayerID/new TargetPos. -> N:
+
+A: Begin Game (Set Target): emit PlayerID/px,py/tx,ty -> N:
 N: on PlayerID/new TargetPos. - Broadcast Pos. -> All A:
 A: on PlayerID/new TargetPos. - recv. render Objects - emit PlayerID/current Pos. ->
 N: on PlayerID/current Pos. - Broadcast Pos. -> All A:
+
+################ Step 2
+
+################ Step 3
+
 A: Shell fired: emit PlayerID/source-, target Vector -> N:
 N: on PlayerID/source-, target Vector - Broadcast PlayerID/source-, target Vector -> All A:
 A: on on PlayerID/source-, target Vector - recv. render Objects
 A: Shell collision: emit PlayerID/Attacker PlayerID-> N:
+
