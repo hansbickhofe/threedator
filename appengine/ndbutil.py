@@ -10,7 +10,6 @@ from google.appengine.api import memcache
 
 
 DEFAULT_SHIP = 'Ship'
-DEFAULT_EVENT = 'Event'
 DEFAULT_OBJECT = 'Object'
 
 class Settings():
