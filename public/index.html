@@ -1,63 +1,96 @@
 <!doctype html>
 <html>
-  
+
   <head>
-    <title>Socket.IO Color selector</title>
+    <title>threedator</title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; padding: 10px; }
-      .palette{width:200px;height:200px;}
+      #A { width:600px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
+      #B { width:100px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
+      #C { width:180px;height:750px;cursor:pointer;background:#2f2f2f;position:absolute;top:60px;color:#fff;font:bold 10px Arial; }
+      #X { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
+      #Y { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
+      #myimg { position: absolute; z-index: 1000; }
     </style>
-  </head>
-  
-  <body>
-    R: <input type="range" min="0" " max="255" value="0" data-id="r">
-    <br>
-    G: <input type="range" min="0" " max="255" value="0" data-id="g">
-    <br>
-    B: <input type="range" min="0" " max="255" value="0" data-id="b">
-    <br>
-    <br>
-    <div class="palette"></div>
-    <br>
-    <span>Drag the slider to change the color</span>
     <script src="js/socket.io-1.2.0.js"></script>
     <script src="js/jquery-1.11.1.js"></script>
+
+  </head>
+
+  <body>
+    <div id="A" style="left:70px;"></div>
+    <img src="dreieck.png" class="follow" id="myimg"/>
+    <div id="B" style="left:700px;">
+      LOGON:
+      Playername<BR>
+      <input type="text" size=5 id="login" value="PLAYERNAME"/>
+      <br>
+      Password<BR>
+      <input type="text" size=5 id="targetid" value="PASSWORD"/>
+      <br>
+      <button id='fire'/>Logon</button><br><br>
+      <hr>
+      FIRE:
+      ShipID<BR>
+      <input type="text" size=5 id="shipid" value="1"/>
+      <br>
+      TargetID<BR>
+      <input type="text" size=5 id="targetid" value="2"/>
+      <br>
+      <button id='fire'/>Fire</button><br><br>
+    </div>
+
+    <div id="C" style="left:830px;"></div>
+    <div id="X" style="left:830px;"></div>
+    <div id="Y" style="left:930px;"></div>
+    <br>
+
     <script>
-      var socket = io();      
-      var _r = 0, _g = 0, _b = 0;
-      
-      var syncInputVal = function(msg){
-        
-        $.each(msg,function(key,value){          
-          window["_" + key] = value;
-          $("input[data-id='"+key+"']").val(value);
-          //console.log(key,value);
-        });
-        
+    var socket = io();
+    var msg_counter = 0 ;
+    var syncInputVal = function(msg){
+        if (msg_counter >= 12 ) {
+          $("#C").empty();
+          msg_counter = 0 ;
+        }
+
+        $.each(msg,function(key,value){
+          $("#C").append(key+' '+value+' <bR>');
+          });
+        $("#C").append('<hr>');
+        msg_counter++;
+
       }
-      
-      socket.on('rgb', function(msg){
-        $(".palette").css('backgroundColor', 'rgb('+ msg.r + ',' + msg.g + ',' + msg.b + ')');
-        syncInputVal(msg); 
-      });
-      
-      $(function(){
-        
-        var changeRGB = function(){  
-          var color = { r: _r, g: _g, b: _b};
-          //console.log(color);
-          socket.emit('rgb', color);  
-        };
-      
-        $("input[type=range]").on('change',function(){
-          var theId = $(this).data('id');
-          window["_" + theId] = $(this).val();
-          changeRGB();
-        });
-      
-        changeRGB();
-      });
+
+    $(document).ready(function(e) {
+
+    $('#fire').click(function(e) {
+      var sendshot = {id: $('#shipid').val(), tid: $('#targetid').val(), time: 0};
+      socket.emit('fire', sendshot);
+    });
+
+    $('#A').click(function(e) {
+
+        var posX = e.pageX ,posY = e.pageY;
+
+        $("#X").text('X: '+posX)
+        $("#Y").text('Y: '+posY)
+
+        var sendpos = { id: $('#shipid').val(), xPos: posX, yPos: posY, time: 0};
+        socket.emit('channelname', sendpos);
+        $('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
+
+
+    });
+    socket.on('channelname', function(msg){
+      $("#C").append(msg);
+      syncInputVal(msg);
+    });
+
+    socket.on('fire', function(msg){
+      $("#C").append(msg);
+      syncInputVal(msg);
+    });
+});
     </script>
   </body>
 
