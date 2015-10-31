@@ -5,7 +5,23 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  secure: always
 
+- url: /images
+  static_dir: images
+  secure: always
+
+- url: /css
+  static_dir: css
+  secure: always
+
+- url: /admin.*
+  script: admin.app
+  secure: always
+  
 - url: /ships.*
   script: ships.app
   secure: always

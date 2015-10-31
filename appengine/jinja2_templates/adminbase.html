@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 	<script type="text/javascript">
 		function toggle_visibility(div_id) {
 		   var comment_div = document.getElementById(div_id);
@@ -18,147 +18,7 @@
 			  comment_div.style.display = 'block';
 		}
 	</script>
-			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&sensor=true"></script>
-			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-			<script>
-			var lat = 50.954765068842214;
-			var lon = 6.9388034110451144;
-			
-			var startPos;
-			
-			function initialize() {
-				navigator.geolocation.getCurrentPosition(function(position) {
-				
-					var startPos = new google.maps.LatLng(lat, lon);
-
-					var mapOptions = {
-					zoom: 19,
-					center: startPos,
-					mapTypeId: google.maps.MapTypeId.HYBRID,
-					}
-					infowindow = new google.maps.InfoWindow({
-						content: "loading..."
-					});
-					var parameters = "lat="+position.coords.latitude+"&lon="+position.coords.longitude+"&range=25.0";
-
-					var xmlhttp = new XMLHttpRequest();
-					var url = "/admin.getobjects?pos="+lat+","+lon;
-								
-					xmlhttp.open("POST", url, true);
-                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-					xmlhttp.onreadystatechange = function () { //Call a function when the state changes.
-										
-					if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						var mymarkers = jQuery.parseJSON( xmlhttp.responseText) ;
-						
-						for(var i=0;i<mymarkers.length;i++){
-							var obj = mymarkers[i];
-							var latlon = obj["pos"].split(",");
-							var tlatlon = obj["target"].split(",");
-							var itempos = new google.maps.LatLng(latlon[0],latlon[1]);
-							var targetpos = new google.maps.LatLng(tlatlon[0],tlatlon[1]);
-							
-							switch (obj["type"]) {
-								case "island":
-									var image = 'images/marina.png';
-									break;
-								case "shipwrecked":
-									var image = 'images/shipwrecked.png';
-									break;
-								case "flotsam":
-									var image = 'images/flotsam.png';
-									break;									
-								default:
-									var isship = 1;
-									var image = 'images/boat.png';
-							}
-							for(var key in obj){
-								
-								if (isship == 1) {
-									var titletext = "ShipID: " +  obj["id"] + "<br>pos: " +  obj["pos"];
-									var title = " name: " +  obj["name"];
-									if (obj["ismovin"] != "False") {
-										
-										var targetimage = 'images/target.png';
-										var targettitletext = "Target for ShipID: " +  obj["id"] + "<br>target: " +  obj["pos"];
-										var targettitle = " Target for: " +  obj["name"];
-										var line = new google.maps.Polyline({
-											path: [
-												itempos, 
-												targetpos
-											],
-											strokeColor: "#FF0000",
-											strokeOpacity: 1.0,
-											strokeWeight: 2,
-											map: map
-										});
-
-										var marker = new google.maps.Marker({
-																	position: targetpos,
-																	map: map,
-																	icon: targetimage,
-																	animation: google.maps.Animation.DROP,
-																	title: targettitle,
-																	html: targettitletext,
-									});	
-									
-									google.maps.event.addListener(marker, "click", function () {
-									infowindow.setContent(this.html);
-									infowindow.open(map, this);
-									})
-									}
-								}
-								else {
-									var titletext = "ObjectID: " +  obj["id"] + "<br>pos (ID): " +  obj["pos"] + "<br>Type: " +  obj["type"];		
-									var title = " name: " +  obj["name"];
-								}
-								
-								var marker = new google.maps.Marker({
-																	position: itempos,
-																	map: map,
-																	icon: image,
-																	animation: google.maps.Animation.DROP,
-																	title: title,
-																	html: titletext,
-									});	
-								}
-								
-								google.maps.event.addListener(marker, "click", function () {
-									infowindow.setContent(this.html);
-									infowindow.open(map, this);
-								})
-							}
-						}
-					}
-					
-					
-	
-				xmlhttp.send(parameters);
-			
-				var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-				
-				var crosshair = new google.maps.Marker({
-					position: startPos,
-					map: map,
-					title: 'Set lat/lon values for this property',
-					draggable: true
-				});				
-				google.maps.event.addListener(crosshair, 'dragend', function(a) {
-					var lat = crosshair.getPosition().lat().toFixed(6);
-					var lng = crosshair.getPosition().lng().toFixed(6);
-					var i;
-					for (i = 0; i < 4; i++) {
-						document.forms[i].elements[1].value = lat+","+lng;
-	
-					}
-				});	
-			});
-
-		}
-				
-		google.maps.event.addDomListener(window, 'load', initialize);
-			</script>
-		</head>
+</head>
 <body>
 	{% block pagehead %}
 		<div class="loginlogout">
@@ -168,16 +28,15 @@
 	{% endblock %}
 	{% if is_admin == 1 %}
 	<div id='container'>
-	
-    {% block content %}	
+
+    {% block content %}
 	
 	{% endblock %}
 	</div>
-	
+
 	{% endif %}
 	{% block footer %}
-	
+
 </body>
 </html>
 	{% endblock %}
-	
