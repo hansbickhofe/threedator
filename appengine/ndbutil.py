@@ -1,5 +1,6 @@
 from google.appengine.ext import ndb
 import os
+import jinja2
 import logging
 import time
 import datetime
@@ -8,6 +9,8 @@ import math
 from geolocation import GeoLocation
 from google.appengine.api import memcache
 
+TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), 'jinja2_templates')
+JINJA_ENVIRONMENT = jinja2.Environment(loader = jinja2.FileSystemLoader(TEMPLATES_DIR),autoescape = True)
 
 DEFAULT_SHIP = 'Ship'
 DEFAULT_OBJECT = 'Object'

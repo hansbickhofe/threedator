@@ -35,9 +35,9 @@ class Handler(webapp2.RequestHandler):
 
 class MainHandler(Handler):
     def get(self):
-        self.render('pagecontent.html', pageheader = "ARR!", pagetitle = "ARR_2.0 Alpha")
+        self.render('pagecontent.html', pageheader = "3!", pagetitle = "Threedator")
 
-		
+
 class ScoresHandler(Handler):
     def get(self):
 		scores = []
@@ -52,7 +52,7 @@ class ScoresHandler(Handler):
 			}
 			scores.append(score)
 		self.render('pagescore.html', pageheader = "ARR!", pagetitle = "ARR_2.0 Alpha", scores = scores)
-    
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/scores', ScoresHandler),
