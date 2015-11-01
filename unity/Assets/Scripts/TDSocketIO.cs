@@ -10,11 +10,12 @@ public class TDSocketIO : MonoBehaviour
 {
 	private SocketIOComponent socket;
 
-	//touch
-	RaycastHit hit;
-	Ray ray;
+	//scripts
+	public Player PlayerScript;
+	public MoveShips MoveScript;
+	public SetTargetCourse TargetScript;
 
-	//process data
+	// process data
 	List<Ship> allShips = new List<Ship>();
 	int arraySize;
 	public int lifeTime;
@@ -22,14 +23,16 @@ public class TDSocketIO : MonoBehaviour
 	public float sendDataTime;
 	public int speed;
 
-	//own ship
+	// player
 	public GameObject ship;
 	int id;
-	float xPos;
-	float zPos;
+	float posX;
+	float posZ;
+	float targetX;
+	float targetZ;
 	int shipTime;
 
-	//received ship data
+	// received data
 	public GameObject r_ship;
 	int r_id;
 	float r_xPos;
@@ -37,55 +40,32 @@ public class TDSocketIO : MonoBehaviour
 	int r_shipTime;
 	
 	public void Start() {
-//		id = UnityEngine.Random.Range(0,100000);
-//		xPos = UnityEngine.Random.Range(-5.0f,5.0f);
-//		zPos = UnityEngine.Random.Range(-5.0f,5.0f);
-//		shipTime = 0;
-
+		// connect to socketIO
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
 		socket.On ("channelname",receiveSocketData);
 	}
 
 	public void Update(){
-//		//keyboard
-//		xPos += Input.GetAxis ("Horizontal") * speed;
-//		zPos += Input.GetAxis ("Vertical") * speed;
-//
-//		//mouse move
-//		if (Input.GetMouseButtonDown(0)){
-//			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-//		}
-//
-//
-//		//touch
-//		if (Input.touchCount > 0){
-//			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-//		}
-//
-//		// ray hit test
-//		if (Physics.Raycast(ray, out hit)){
-//			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
-//				xPos = hit.point.x;
-//				zPos = hit.point.z;
-//			}
-//		}
-
 		//timer
 		timer += Time.deltaTime;
 		if (timer > sendDataTime) {
+			//get current target course
+			targetX = TargetScript.targetX;
+			targetZ = TargetScript.targetZ;
 			SendJsonData();
 			timer = 0;
 		}
 	}
 
 	// send data
-
 	public void SendJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
 		json.Add("id",id.ToString());
-		json.Add("xPos",xPos.ToString());
-		json.Add("yPos",zPos.ToString());
+		json.Add("posX",posX.ToString());
+		json.Add("posZ",posZ.ToString());
+		json.Add("targetX",targetX.ToString());
+		json.Add("targetZ",targetZ.ToString());
 		json.Add("time",shipTime.ToString());
 		
 		socket.Emit("channelname",new JSONObject(json));
@@ -95,7 +75,6 @@ public class TDSocketIO : MonoBehaviour
 
 
 	// receive data
-
 	public void receiveSocketData(SocketIOEvent e){
 		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
 		JSONObject jo = e.data as JSONObject;
@@ -109,6 +88,7 @@ public class TDSocketIO : MonoBehaviour
 		CleanupOldData();
 	}
 
+	// process
 	void ProcessData(){
 		bool idFound = false;
 		
@@ -141,17 +121,9 @@ public class TDSocketIO : MonoBehaviour
 			print (r_id+": added!");
 			arraySize++;
 		}
-
-		//check array for debug
-//		string listString = "";
-//		
-//		for (int i = 0; i<arraySize; i++){
-//			listString += allShips[i].id+", ";
-//		}
-//		
-//		print(arraySize+" : "+listString);
 	}
-	
+
+	// look for unused player objects after shiptime (sec.)
 	void CleanupOldData(){
 		arraySize = allShips.Count;
 		

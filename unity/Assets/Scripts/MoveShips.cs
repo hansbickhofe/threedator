@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RenderShips : MonoBehaviour {
+public class MoveShips : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

@@ -9,7 +9,7 @@ public class SetTargetCourse : MonoBehaviour {
 
 	//target position
 	public float targetX;
-	public float targetY;
+	public float targetZ;
 
 	// Use this for initialization
 	void Start () {
@@ -33,7 +33,7 @@ public class SetTargetCourse : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit)){
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
 				targetX = hit.point.x;
-				targetY = hit.point.z;
+				targetZ = hit.point.z;
 			}
 		}
 	
