@@ -37,10 +37,10 @@ public class TDSocketIO : MonoBehaviour
 	int r_shipTime;
 	
 	public void Start() {
-		id = UnityEngine.Random.Range(0,100000);
-		xPos = UnityEngine.Random.Range(-5.0f,5.0f);
-		zPos = UnityEngine.Random.Range(-5.0f,5.0f);
-		shipTime = 0;
+//		id = UnityEngine.Random.Range(0,100000);
+//		xPos = UnityEngine.Random.Range(-5.0f,5.0f);
+//		zPos = UnityEngine.Random.Range(-5.0f,5.0f);
+//		shipTime = 0;
 
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
@@ -48,28 +48,28 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 	public void Update(){
-		//keyboard
-		xPos += Input.GetAxis ("Horizontal") * speed;
-		zPos += Input.GetAxis ("Vertical") * speed;
-
-		//mouse move
-		if (Input.GetMouseButtonDown(0)){
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		}
-
-
-		//touch
-		if (Input.touchCount > 0){
-			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-		}
-
-		// ray hit test
-		if (Physics.Raycast(ray, out hit)){
-			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
-				xPos = hit.point.x;
-				zPos = hit.point.z;
-			}
-		}
+//		//keyboard
+//		xPos += Input.GetAxis ("Horizontal") * speed;
+//		zPos += Input.GetAxis ("Vertical") * speed;
+//
+//		//mouse move
+//		if (Input.GetMouseButtonDown(0)){
+//			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+//		}
+//
+//
+//		//touch
+//		if (Input.touchCount > 0){
+//			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+//		}
+//
+//		// ray hit test
+//		if (Physics.Raycast(ray, out hit)){
+//			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
+//				xPos = hit.point.x;
+//				zPos = hit.point.z;
+//			}
+//		}
 
 		//timer
 		timer += Time.deltaTime;
@@ -78,6 +78,8 @@ public class TDSocketIO : MonoBehaviour
 			timer = 0;
 		}
 	}
+
+	// send data
 
 	public void SendJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
@@ -91,8 +93,9 @@ public class TDSocketIO : MonoBehaviour
 		print ("json send: "+json);
 	}
 
-	//------------------------------------------------------------------//
-	
+
+	// receive data
+
 	public void receiveSocketData(SocketIOEvent e){
 		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
 		JSONObject jo = e.data as JSONObject;
