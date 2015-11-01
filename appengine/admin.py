@@ -55,6 +55,42 @@ class MainHandler(Handler):
 			url = users.create_login_url(self.request.uri)
 			self.render('adminform.html', pageheader = "Admin", pagetitle = "Threedator Admin", user = user_userid, login_out_url = url, linktext = url_linktext, is_admin = 0 )
 
+class ListPlayersHandler(webapp2.RequestHandler):
+	def post(self):
+		user = users.get_current_user()
+		if users.is_current_user_admin():
+			allPlayers = Player.showAllPlayers()
+		self.response.headers['Content-Type'] = 'application/json'
+		self.response.out.write(json.encode(allPlayers))
+
+class AddPlayerHandler(webapp2.RequestHandler):
+	def post(self):
+		playerList = []
+		user = users.get_current_user()
+		if users.is_current_user_admin():
+			playername = cgi.escape(self.request.get('playername'))
+			playerpassword = cgi.escape(self.request.get('password'))
+			playerteam = cgi.escape(self.request.get('team'))
+			newplayer = Player.create_newplayer(playername,playerpassword,playerteam)
+			playerList.append(newplayer)
+
+		self.response.headers['Content-Type'] = 'application/json'
+		self.response.out.write(json.encode(playerList))
+
+class CheckPlayerLoginHandler(webapp2.RequestHandler):
+	def post(self):
+		playerList = []
+		playername = cgi.escape(self.request.get('playername'))
+		playerpassword = cgi.escape(self.request.get('password'))
+		checkedplayer = Player.check_player_login(playername,playerpassword)
+		playerList.append(checkedplayer)
+
+		self.response.headers['Content-Type'] = 'application/json'
+		self.response.out.write(json.encode(playerList))
+
 app = webapp2.WSGIApplication([
     ('/admin', MainHandler),
+    ('/admin.listplayers', ListPlayersHandler),
+    ('/admin.addplayer', AddPlayerHandler),
+    ('/admin.checklogin', CheckPlayerLoginHandler),
 ], debug=True)

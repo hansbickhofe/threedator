@@ -86,6 +86,7 @@
     });
     socket.on('channelname', function(msg){
       $("#C").append(msg);
+      // $('.follow').css({'top': msg.xPos - 20, 'left': msg.zPos - 20});
       syncInputVal(msg);
     });
 

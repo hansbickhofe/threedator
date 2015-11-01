@@ -24,4 +24,3 @@ A: Shell fired: emit PlayerID/source-, target Vector -> N:
 N: on PlayerID/source-, target Vector - Broadcast PlayerID/source-, target Vector -> All A:
 A: on on PlayerID/source-, target Vector - recv. render Objects
 A: Shell collision: emit PlayerID/Attacker PlayerID-> N:
-

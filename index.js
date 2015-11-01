@@ -11,7 +11,8 @@ var app = express();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var PORT = process.env.PORT || 3000;
-
+var https = require('https');
+var querystring = require('querystring');
 //static
 app.use(express.static(__dirname + '/public'));
 
@@ -40,7 +41,34 @@ io.on('connection', function(socket){
   //logon from user (failed for testing)
   socket.on('logon', function(msg){
     if(msg){
-      console.log('logon failed: (' + msg.login + "," + msg.password + ")");
+
+			var post_data = querystring.stringify({
+				'playername' : msg.login,
+				'password': msg.password
+				});
+
+
+			var post_options = {
+	      host: 'threedator.appspot.com',
+	      port: '443',
+	      path: '/admin.checklogin',
+	      method: 'POST',
+	      headers: {
+	          'Content-Type': 'application/x-www-form-urlencoded',
+	          'Content-Length': Buffer.byteLength(post_data)
+	      }
+  		};
+
+			var post_req = https.request(post_options, function(res) {
+	      res.setEncoding('utf8');
+	      res.on('data', function (chunk) {
+	          console.log('Response: ' + chunk);
+	      });
+	  	});
+			// post the data
+		  post_req.write(post_data);
+		  post_req.end();
+
     }
     io.emit('logonnack',msg.login);
   });

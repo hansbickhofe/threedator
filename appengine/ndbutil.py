@@ -6,14 +6,13 @@ import time
 import datetime
 import random
 import math
-from geolocation import GeoLocation
-from google.appengine.api import memcache
+from hashlib import sha512
+
 
 TEMPLATES_DIR = os.path.join(os.path.dirname(__file__), 'jinja2_templates')
 JINJA_ENVIRONMENT = jinja2.Environment(loader = jinja2.FileSystemLoader(TEMPLATES_DIR),autoescape = True)
 
-DEFAULT_SHIP = 'Player'
-DEFAULT_OBJECT = 'Object'
+DEFAULT_PLAYER = 'Player'
 
 class Settings():
 	"""GameSettings """
@@ -26,36 +25,76 @@ class Settings():
 	rndRadius = 0.0400
 	ammodefault = 5
 
-def player_key(shipkey=DEFAULT_SHIP):
+def player_key(playerkey=DEFAULT_PLAYER):
 	"""Constructs a Datastore key for a Player entity.
 
 	We use shipname as the key.
 	"""
-	return ndb.Key('Player', shipkey)
+	return ndb.Key('Player', playerkey)
 
 class Player(ndb.Model):
 	"""Model for Playerdata"""
 	playerKey = player_key()
 	playerCreated = ndb.DateTimeProperty(auto_now_add=True)
 	playerName = ndb.StringProperty(required=True,default="")
-	playerPW = ndb.StringProperty(required=True)
+	playerPwHash = ndb.StringProperty(required=True,default="")
 	playerScore = ndb.IntegerProperty(default=0)
 	playerTeam = ndb.StringProperty(required=True,default="")
 
+
+	@classmethod
+	def gen_phash(self,playername,playerpassword):
+		return sha512(playername + playerpassword).hexdigest()
+
+
+	# create new Player
+	@classmethod
+	def create_newplayer(self,name,password,team):
+		player = Player()
+		player.playerName = str(name)
+		player.playerTeam = str(team)
+		pHash = Player.gen_phash(name,password)
+		player.playerPwHash = str(pHash)
+		player.put()
+		return player.key.id()
+
+	# checl Player Login
+	@classmethod
+	def check_player_login(self,name,password):
+		pHash = self.gen_phash(name,password)
+		playerquery = self.query(ndb.AND(self.playerName == name,self.playerPwHash == pHash)).fetch(1,keys_only=True)
+		if len(playerquery) == 1:
+			player = playerquery[0].get()
+			userlogin = {
+			"logonack": {
+			"playerid": player.key.id(),
+			"playername": player.playerName,
+			"playerscore": player.playerScore,
+			"status": "password check ok"
+			}}
+		else:
+			userlogin = {
+			"logonnack": {
+			"playername": name,
+			"playerscore": 0,
+			"status": "password check failed"
+			}}
+		return userlogin
+
 	# list all registerd Ships
-	# @classmethod
-	# def showAllShips(self):
-	# 	ships = []
-	# 	shipquery = self.query().fetch()
-	# 	for ship in shipquery:
-	# 		showship = {
-	# 		'id': ship.key.id(),
-	# 		'name': ship.shipName,
-	# 		'team': ship.shipFaction,
-	# 		'score': ship.shipScore,
-	# 		}
-	# 		ships.append(showship)
-	# 	return ships
+	@classmethod
+	def showAllPlayers(self):
+		players = []
+		playerquery = self.query().fetch()
+		for player in playerquery:
+			showplayer= {
+			'id': player.key.id(),
+			'name': player.playerName,
+			'team': player.playerTeam,
+			'score': player.playerScore,
+			}
+			players.append(showplayer)
+		return players
 
 	# show Scores
 	# @classmethod
@@ -133,12 +172,3 @@ class Player(ndb.Model):
 	# 	return response
 	#
 	#
-	# # create new Ship
-	# @classmethod
-	# def create_newship(self,name,pos,faction):
-	# 	ship = Ship()
-	# 	ship.shipName = name
-	# 	ship.shipTargetPos = ndb.GeoPt(str(pos))
-	# 	ship.shipFaction = str(faction)
-	# 	ship.put()
-	# 	return ship.key.id()
