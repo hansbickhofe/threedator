@@ -5,15 +5,15 @@ public class Ship
 {
 	public GameObject ship;
 	public int id;
-	public float xPos;
-	public float zPos;
+	public float posX;
+	public float posZ;
 	public int time;
 
-	public Ship(GameObject newShip, int newID, float newXpos, float newZpos, int newTime){
+	public Ship(GameObject newShip, int newID, float newPosX, float newPosZ, int newTime){
 		ship = newShip;
 		id = newID;
-		xPos = newXpos;
-		zPos = newZpos;
+		posX = newPosX;
+		posZ = newPosZ;
 		time = newTime;
 	}
 }
