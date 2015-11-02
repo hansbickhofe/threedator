@@ -11,15 +11,24 @@ public class SetTargetCourse : MonoBehaviour {
 	public float targetX;
 	public float targetZ;
 
+	//new course every three seconds 
+	bool canTouch; 
+	public float waitTime; // 3.0f
+	float time;
+
+
 	// Use this for initialization
 	void Start () {
-	
+		canTouch = true;
+		time = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		//mouse move
+
+		//timer
+
+		//mouse click
 		if (Input.GetMouseButtonDown(0)){
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		}
