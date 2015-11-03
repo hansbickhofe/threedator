@@ -17,18 +17,19 @@ public class Settings : MonoBehaviour {
 	public string pID;
 	public string pPW;
 	//public string roomID;
-	//public string url = "http://defaulturl.com";
+	// public string url = "https://threedator.appspot.com/admin.checklogin";
+	public string url = "http://http://localhost:24080/admin.checklogin";
 	public int pScore;
 
-	bool dataValidated = false; 
-	
+	bool dataValidated = false;
+
 	InputField InputName;
 	InputField InputTeam;
 	InputField InputID;
 	InputField InputPW;
 	InputField InputRoomID;
 	InputField InputUrl;
-	
+
 	void Start () {
 
 		// connect to socketIO
@@ -66,7 +67,7 @@ public class Settings : MonoBehaviour {
 	}
 
 	// on button click "SET"
-	void SaveToLocalPrefs(){ 
+	void SaveToLocalPrefs(){
 		PlayerPrefs.SetString("PLAYER", pName);
 		//PlayerPrefs.SetString("TEAM", pTeam);
 		//PlayerPrefs.SetString("ID", pID);
@@ -106,7 +107,7 @@ public class Settings : MonoBehaviour {
 		SaveToLocalPrefs ();
 		dataValidated = true;
 	}
-	
+
 	// receive data when status ok
 	public void receiveSocketDataAck(SocketIOEvent e){
 		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
