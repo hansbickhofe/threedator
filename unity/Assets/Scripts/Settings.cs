@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using SocketIO;
+// using SocketIO;
 using UnityEngine.UI;
+using LitJson;
 
 public class Settings : MonoBehaviour {
 
-	private SocketIOComponent socket;
+	// private SocketIOComponent socket;
 
 	public GameObject ErrorTxt;
 
@@ -17,8 +18,8 @@ public class Settings : MonoBehaviour {
 	public string pID;
 	public string pPW;
 	//public string roomID;
-	// public string url = "https://threedator.appspot.com/admin.checklogin";
-	public string url = "http://http://localhost:24080/admin.checklogin";
+	public string loginurl = "https://threedator.appspot.com/admin.checklogin";
+	// public string loginurl = "http://localhost:24080/admin.checklogin";
 	public int pScore;
 
 	bool dataValidated = false;
@@ -33,9 +34,9 @@ public class Settings : MonoBehaviour {
 	void Start () {
 
 		// connect to socketIO
-		GameObject go = GameObject.Find("SocketIO");
-		socket = go.GetComponent<SocketIOComponent>();
-		socket.On ("logonack",receiveSocketDataAck);
+		// GameObject go = GameObject.Find("SocketIO");
+		// socket = go.GetComponent<SocketIOComponent>();
+		// socket.On ("logonack",receiveSocketDataAck);
 		//socket.On ("logonnack",receiveSocketDataNack);
 
 		//access input fields
@@ -45,7 +46,6 @@ public class Settings : MonoBehaviour {
 		InputPW = GameObject.Find("InputFieldPW").GetComponent<InputField>();
 		//InputRoomID = GameObject.Find("InputFieldRoomID").GetComponent<InputField>();
 		//InputUrl = GameObject.Find("InputFieldURL").GetComponent<InputField>();
-
 		//reset error message
 		ErrorTxt.GetComponent<Text>().text = "";
 
@@ -61,9 +61,10 @@ public class Settings : MonoBehaviour {
 		//roomID = InputRoomID.text;
 		//url = InputUrl.text;
 
-		SendJsonData();
+		// 1st version via socketIO
+		// SendJsonData();
+		StartCoroutine(SendJsonData());
 
-		//SaveToLocalPrefs ();
 	}
 
 	// on button click "SET"
@@ -94,44 +95,69 @@ public class Settings : MonoBehaviour {
 		//InputUrl.text = PlayerPrefs.GetString("URL");
 	}
 
+	// 1st version via socketIO
 	// send data
-	public void SendJsonData(){
-		Dictionary<string,string> json = new Dictionary<string, string>();
-		json.Add("login",pName.ToString());
-		json.Add("password",pPW.ToString());
-		socket.Emit("logon",new JSONObject(json));
+	// public void SendJsonData(){
+		// Dictionary<string,string> json = new Dictionary<string, string>();
+		// json.Add("login",pName.ToString());
+		// json.Add("password",pPW.ToString());
+		// socket.Emit("logon",new JSONObject(json));
+		// send via http post urlencoded
+	private IEnumerator SendJsonData() {
+		WWWForm form = new WWWForm();
+		form.AddField("playername", pName.ToString());
+		form.AddField("password", pPW.ToString());
+		WWW loginResponse = new WWW(loginurl, form);
+		// Debug
+		// print("Send: "+pName.ToString()+" "+pPW.ToString());
 
-		print("Send: "+pName.ToString()+" "+pPW.ToString());
+		yield return loginResponse;
 
-		//debug
-		SaveToLocalPrefs ();
-		dataValidated = true;
-	}
+		if (loginResponse.error == null) {
+			// JSONObject jo = loginResponse.text as JSONObject;
+			JsonData jo = JsonMapper.ToObject(loginResponse.text);
 
-	// receive data when status ok
-	public void receiveSocketDataAck(SocketIOEvent e){
-		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
-		JSONObject jo = e.data as JSONObject;
-		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
-
-		if (pName == jo["playername"].str){
-			pID = jo["playerid"].str;
-			pScore = int.Parse(jo["playerscore"].str);
-			SaveToLocalPrefs ();
-			ErrorTxt.GetComponent<Text>().text = "Login data ok!";
-			dataValidated = true;
+			if (jo["logon"]["status"].ToString() == "ack"){
+				pID = jo["logon"]["playerid"].ToString();
+				pScore = int.Parse(jo["logon"]["playerscore"].ToString());
+				SaveToLocalPrefs ();
+				ErrorTxt.GetComponent<Text>().text = "Login data ok!";
+				dataValidated = true;
+				// Debug
+				print("Recv: OK - User: "+pName.ToString()+" ID: "+pID.ToString()+" Score: "+pScore.ToString());
+				SaveToLocalPrefs ();
+				dataValidated = true;
+			}
+			else if (jo["logon"]["status"].ToString() == "nack" ){
+				ErrorTxt.GetComponent<Text>().text = "Login data incorrect!";
+				dataValidated = false;
+			}
 		}
 	}
+	// receive data when status ok
+	// public void receiveSocketDataAck(SocketIOEvent e){
+	// 	Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+	// 	JSONObject jo = e.data as JSONObject;
+	// 	//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
+	//
+	// 	if (pName == jo["playername"].str){
+	// 		pID = jo["playerid"].str;
+	// 		pScore = int.Parse(jo["playerscore"].str);
+	// 		SaveToLocalPrefs ();
+	// 		ErrorTxt.GetComponent<Text>().text = "Login data ok!";
+	// 		dataValidated = true;
+	// 	}
+	// }
 
 	// receive data when status ok
-	public void receiveSocketDataNack(SocketIOEvent e){
-		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
-		JSONObject jo = e.data as JSONObject;
-		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
-
-		if (pName == jo["playername"].str){
-			ErrorTxt.GetComponent<Text>().text = "Login data incorrect!";
-			dataValidated = false;
-		}
-	}
+	// public void receiveSocketDataNack(SocketIOEvent e){
+	// 	Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+	// 	JSONObject jo = e.data as JSONObject;
+	// 	//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
+	//
+	// 	if (pName == jo["playername"].str){
+	// 		ErrorTxt.GetComponent<Text>().text = "Login data incorrect!";
+	// 		dataValidated = false;
+	// 	}
+	// }
 }

@@ -79,14 +79,12 @@ class AddPlayerHandler(webapp2.RequestHandler):
 
 class CheckPlayerLoginHandler(webapp2.RequestHandler):
 	def post(self):
-		playerList = []
 		playername = cgi.escape(self.request.get('playername'))
 		playerpassword = cgi.escape(self.request.get('password'))
 		checkedplayer = Player.check_player_login(playername,playerpassword)
-		playerList.append(checkedplayer)
 
 		self.response.headers['Content-Type'] = 'application/json'
-		self.response.out.write(json.encode(playerList))
+		self.response.out.write(json.encode(checkedplayer))
 
 app = webapp2.WSGIApplication([
     ('/admin', MainHandler),

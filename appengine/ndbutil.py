@@ -66,18 +66,18 @@ class Player(ndb.Model):
 		if len(playerquery) == 1:
 			player = playerquery[0].get()
 			userlogin = {
-			"logonack": {
+			"logon": {
 			"playerid": player.key.id(),
 			"playername": player.playerName,
 			"playerscore": player.playerScore,
-			"status": "password check ok"
+			"status": "ack"
 			}}
 		else:
 			userlogin = {
-			"logonnack": {
+			"logon": {
 			"playername": name,
 			"playerscore": 0,
-			"status": "password check failed"
+			"status": "nack"
 			}}
 		return userlogin
 
