@@ -60,8 +60,8 @@ class ListPlayersHandler(webapp2.RequestHandler):
 		user = users.get_current_user()
 		if users.is_current_user_admin():
 			allPlayers = Player.showAllPlayers()
-		self.response.headers['Content-Type'] = 'application/json'
-		self.response.out.write(json.encode(allPlayers))
+			self.response.headers['Content-Type'] = 'application/json'
+			self.response.out.write(json.encode(allPlayers))
 
 class AddPlayerHandler(webapp2.RequestHandler):
 	def post(self):
