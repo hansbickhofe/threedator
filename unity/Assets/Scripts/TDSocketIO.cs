@@ -11,12 +11,11 @@ public class TDSocketIO : MonoBehaviour
 	private SocketIOComponent socket;
 
 	//scripts
-	public Player PlayerScript;
-	public MoveShips MoveScript;
+	public PlayerData PlayerScript;
 	public SetTargetCourse TargetScript;
 
 	// process data
-	List<Ship> allShips = new List<Ship>();
+	public List<Ship> allShips = new List<Ship>();
 	int arraySize;
 	public int lifeTime;
 	float timer;
@@ -73,7 +72,7 @@ public class TDSocketIO : MonoBehaviour
 		
 		socket.Emit("channelname",new JSONObject(json));
 		
-		print ("json send: "+json);
+		//print ("json send: "+json);
 	}
 
 
@@ -86,6 +85,8 @@ public class TDSocketIO : MonoBehaviour
 		r_id = int.Parse(jo["id"].str);
 		r_posX = float.Parse(jo["posX"].str);
 		r_posZ = float.Parse(jo["posZ"].str);
+		r_targetX = float.Parse(jo["targetX"].str);
+		r_targetZ = float.Parse(jo["targetZ"].str);
 		r_shipTime = int.Parse(jo["time"].str);
 		ProcessData();
 		CleanupOldData();
@@ -97,14 +98,24 @@ public class TDSocketIO : MonoBehaviour
 		
 		// check if id already exists
 		arraySize = allShips.Count;
+	
 		for (int i = 0; i<arraySize; i++){
 			if ((int)allShips[i].id == r_id) {
 				//existing ship pos updaten
-				allShips[i].posX = r_posX;
-				allShips[i].posZ = r_posZ;
-				allShips[i].ship.transform.position = new Vector3(r_posX,0.5f,r_posZ);
+
+				ShipMove ShipScript = allShips[i].ship.GetComponent<ShipMove>();
+				ShipScript.posX = r_posX;
+				ShipScript.posZ = r_posX;
+				ShipScript.targetX = r_targetX;
+				ShipScript.targetZ = r_targetZ;
+			
+				//allShips[i].posX = r_posX;
+				//allShips[i].posZ = r_posZ;
+				//allShips[i].targetX = r_targetX;
+				//allShips[i].targetZ = r_targetZ;
 				allShips[i].time = r_shipTime;
-				print(id+": is already there!");
+
+				//print(id+": is already there!");
 				idFound = true;
 				break;
 			}
@@ -120,7 +131,8 @@ public class TDSocketIO : MonoBehaviour
 			newShip.GetComponent<Renderer>().material.SetColor("_Color", randomColor);
 
 			// neue daten ins array schreiben
-			allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_shipTime));
+			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
+			allShips.Add(new Ship(newShip, r_id, r_shipTime));
 			print (r_id+": added!");
 			arraySize++;
 		}
@@ -142,4 +154,21 @@ public class TDSocketIO : MonoBehaviour
 			}
 		}
 	}
+
+//	void MoveShips(){
+//
+//		// check if id already exists
+//		arraySize = allShips.Count;
+//		
+//		for (int i = 0; i<arraySize; i++){
+//			// tween position of all ships
+//			//allShips[i].ship.transform.position = new Vector3(r_posX,0.5f,r_posZ);
+//			Vector3 curPos = new Vector3(allShips[i].posX,0.5f,allShips[i].posZ);
+//			Vector3 tarPos = new Vector3(allShips[i].targetX,0.5f,allShips[i].targetZ);
+//			
+//			print (curPos+" "+tarPos);
+//			//allShips[i].ship.transform.position = Vector3.MoveTowards(curPos, tarPos, 100*Time.deltaTime);
+//			allShips[i].ship.transform.position = Vector3.Lerp(curPos,tarPos, Time.deltaTime * 2.0f);
+//		}
+//	}
 }
