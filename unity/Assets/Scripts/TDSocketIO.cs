@@ -24,7 +24,7 @@ public class TDSocketIO : MonoBehaviour
 
 	// player
 	public GameObject ship;
-	int id;
+	string id;
 	float posX;
 	float posZ;
 	float targetX;
@@ -33,7 +33,7 @@ public class TDSocketIO : MonoBehaviour
 
 	// received data
 	public GameObject r_ship;
-	int r_id;
+	string r_id;
 	float r_posX;
 	float r_posZ;
 	float r_targetX;
@@ -63,7 +63,7 @@ public class TDSocketIO : MonoBehaviour
 	// send data
 	public void SendJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
-		json.Add("id",id.ToString());
+		json.Add("id",PlayerScript.id);
 		json.Add("posX",posX.ToString());
 		json.Add("posZ",posZ.ToString());
 		json.Add("targetX",targetX.ToString());
@@ -82,7 +82,9 @@ public class TDSocketIO : MonoBehaviour
 		JSONObject jo = e.data as JSONObject;
 		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
 
-		r_id = int.Parse(jo["id"].str);
+		r_id = jo["id"].str;
+		print ("ddd: "+r_id);
+
 		r_posX = float.Parse(jo["posX"].str);
 		r_posZ = float.Parse(jo["posZ"].str);
 		r_targetX = float.Parse(jo["targetX"].str);
@@ -94,13 +96,16 @@ public class TDSocketIO : MonoBehaviour
 
 	// process
 	void ProcessData(){
+
 		bool idFound = false;
 		
 		// check if id already exists
 		arraySize = allShips.Count;
-	
+
 		for (int i = 0; i<arraySize; i++){
-			if ((int)allShips[i].id == r_id) {
+			//print("hello"+arraySize);
+
+			if (allShips[i].id == r_id) {
 				//existing ship pos updaten
 
 				ShipMove ShipScript = allShips[i].ship.GetComponent<ShipMove>();
@@ -108,11 +113,6 @@ public class TDSocketIO : MonoBehaviour
 				ShipScript.posZ = r_posX;
 				ShipScript.targetX = r_targetX;
 				ShipScript.targetZ = r_targetZ;
-			
-				//allShips[i].posX = r_posX;
-				//allShips[i].posZ = r_posZ;
-				//allShips[i].targetX = r_targetX;
-				//allShips[i].targetZ = r_targetZ;
 				allShips[i].time = r_shipTime;
 
 				//print(id+": is already there!");
@@ -123,12 +123,32 @@ public class TDSocketIO : MonoBehaviour
 		
 		// neue id eintragen
 		if (!idFound){
+
 			//ship an random pos mit random color erzeugen
 			GameObject newShip;
 			Vector3 spawnPosition = new Vector3(r_posX,2,r_posZ);
 			newShip = Instantiate(ship, spawnPosition, transform.rotation) as GameObject;
-			Color randomColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
-			newShip.GetComponent<Renderer>().material.SetColor("_Color", randomColor);
+			print("hello"+arraySize);
+
+			//color 
+			Color playerColor;
+			string playername;
+
+			if (r_id == PlayerScript.id){ // eigenes ship finden
+				playerColor = new Color (1.0f,1.0f,1.0f);
+				playername = PlayerScript.playername;
+			} else {
+				// später color und name der gegner mitsenden
+				playerColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
+				playername = "?";
+			}
+
+			//randomColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
+
+			//color und name setzen
+			newShip.GetComponent<Renderer>().material.SetColor("_Color", playerColor);
+			newShip.transform.Find("PlayerName").GetComponent<TextMesh>().text = playername;
+
 
 			// neue daten ins array schreiben
 			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
@@ -155,20 +175,12 @@ public class TDSocketIO : MonoBehaviour
 		}
 	}
 
-//	void MoveShips(){
-//
-//		// check if id already exists
-//		arraySize = allShips.Count;
-//		
-//		for (int i = 0; i<arraySize; i++){
-//			// tween position of all ships
-//			//allShips[i].ship.transform.position = new Vector3(r_posX,0.5f,r_posZ);
-//			Vector3 curPos = new Vector3(allShips[i].posX,0.5f,allShips[i].posZ);
-//			Vector3 tarPos = new Vector3(allShips[i].targetX,0.5f,allShips[i].targetZ);
-//			
-//			print (curPos+" "+tarPos);
-//			//allShips[i].ship.transform.position = Vector3.MoveTowards(curPos, tarPos, 100*Time.deltaTime);
-//			allShips[i].ship.transform.position = Vector3.Lerp(curPos,tarPos, Time.deltaTime * 2.0f);
-//		}
+
+	// hex to rgb converter 
+//	Color HexToColor(string hex){
+//		byte r = byte.Parse(hex.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
+//		byte g = byte.Parse(hex.Substring(2,2), System.Globalization.NumberStyles.HexNumber);
+//		byte b = byte.Parse(hex.Substring(4,2), System.Globalization.NumberStyles.HexNumber);
+//		return new Color32(r,g,b, 255);
 //	}
 }
