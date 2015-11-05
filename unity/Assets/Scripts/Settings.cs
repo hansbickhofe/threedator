@@ -46,6 +46,11 @@ public class Settings : MonoBehaviour {
 		ReadLocalPrefs();
 	}
 
+	void Update(){
+		//android back button -> Quit
+		if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+	}
+
 	void ReadLocalPrefs(){
 		// re-fill input fields from local prefs
 		InputName.text = PlayerPrefs.GetString("PLAYER");

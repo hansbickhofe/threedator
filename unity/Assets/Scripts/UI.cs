@@ -20,6 +20,9 @@ public class UI : MonoBehaviour {
 		"Shots: "+PlayerScript.shots+"\n"+
 		"Color: "+PlayerScript.color+"\n"
 		;
+
+		//android back button -> Settings
+		if (Input.GetKeyDown(KeyCode.Escape)) Application.LoadLevel ("Settings");
 	}
 
 	public void ToggleGameData(){
