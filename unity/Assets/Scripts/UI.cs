@@ -5,15 +5,21 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour {
 
 	public GameObject DebugTxt;
+	public PlayerData PlayerScript;
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		DebugTxt.GetComponent<Text>().text = 
+		"Name: "+PlayerScript.playername+"\n"+
+		"ID: "+PlayerScript.id+"\n"+
+		"Score: "+PlayerScript.score+"\n"+
+		"Shots: "+PlayerScript.shots+"\n"+
+		"Color: "+PlayerScript.color+"\n"
+		;
 	}
 
 	public void ToggleGameData(){

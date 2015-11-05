@@ -32,7 +32,6 @@ public class Settings : MonoBehaviour {
 	InputField InputUrl;
 
 	void Start () {
-
 		//access input fields
 		InputName = GameObject.Find("InputFieldPlayer").GetComponent<InputField>();
 		InputPW = GameObject.Find("InputFieldPW").GetComponent<InputField>();
@@ -43,10 +42,21 @@ public class Settings : MonoBehaviour {
 		//reset error message
 		ErrorTxt.GetComponent<Text>().text = "";
 
-		//set values
+		// read existing values
 		ReadLocalPrefs();
 	}
 
+	void ReadLocalPrefs(){
+		// re-fill input fields from local prefs
+		InputName.text = PlayerPrefs.GetString("PLAYER");
+		InputPW.text = PlayerPrefs.GetString("PASSWORD");
+		InputColor.text = PlayerPrefs.GetString("COLOR");
+		//InputTeam.text = PlayerPrefs.GetString("TEAM");
+		//InputRoomID.text = PlayerPrefs.GetString("ROOM");
+		//InputUrl.text = PlayerPrefs.GetString("URL");
+	}
+
+	// on button click "SET"
 	public void SetFormData(){
 		pName = InputName.text;
 		pPW = InputPW.text;
@@ -58,7 +68,6 @@ public class Settings : MonoBehaviour {
 		StartCoroutine(SendJsonData());
 	}
 
-	// on button click "SET"
 	void SaveToLocalPrefs(){
 		PlayerPrefs.SetString("ID", pID);
 		PlayerPrefs.SetString("PLAYER", pName);
@@ -69,41 +78,12 @@ public class Settings : MonoBehaviour {
 		//PlayerPrefs.SetString("URL", url);
 	}
 
-	public void ClearScores(){
-		//InputID.text = "";
-		InputName.text = "";
-		InputPW.text = "";
-		InputColor.text = "";
-		//InputTeam.text = "";
-		//InputRoomID.text = "";
-
-		PlayerPrefs.DeleteAll();
-		ErrorTxt.GetComponent<Text>().text = "All player prefs cleared!";
-	}
-
-	// on button click "GO"
-	public void StartGame(){
-		if (dataValidated) Application.LoadLevel ("Threedator");
-	}
-
-	void ReadLocalPrefs(){
-		InputName.text = PlayerPrefs.GetString("PLAYER");
-		InputPW.text = PlayerPrefs.GetString("PASSWORD");
-		InputColor.text = PlayerPrefs.GetString("COLOR");
-		//InputTeam.text = PlayerPrefs.GetString("TEAM");
-		//InputRoomID.text = PlayerPrefs.GetString("ROOM");
-		//InputUrl.text = PlayerPrefs.GetString("URL");
-	}
-
 	// send data
 	private IEnumerator SendJsonData() {
 		WWWForm form = new WWWForm();
 		form.AddField("playername", pName.ToString());
 		form.AddField("password", pPW.ToString());
 		WWW loginResponse = new WWW(loginurl, form);
-
-		// Debug
-		// print("Send: "+pName.ToString()+" "+pPW.ToString());
 
 		yield return loginResponse;
 
@@ -116,8 +96,6 @@ public class Settings : MonoBehaviour {
 				SaveToLocalPrefs();
 				ErrorTxt.GetComponent<Text>().text = "Login data ok!";
 				dataValidated = true;
-				SaveToLocalPrefs ();
-				dataValidated = true;
 
 				// Debug
 				//print("Recv: OK - User: "+pName.ToString()+" ID: "+pID.ToString()+" Score: "+pScore.ToString());
@@ -127,5 +105,24 @@ public class Settings : MonoBehaviour {
 				dataValidated = false;
 			}
 		}
+	}
+
+	// on button click "GO"
+	public void StartGame(){
+		if (dataValidated) Application.LoadLevel ("Threedator");
+		else ErrorTxt.GetComponent<Text>().text = "No login data set!";
+	}
+
+	public void ClearScores(){
+		// clear input fields
+		InputName.text = "";
+		InputPW.text = "";
+		InputColor.text = "";
+		//InputTeam.text = "";
+		//InputRoomID.text = "";
+		
+		// delete player prefs
+		PlayerPrefs.DeleteAll();
+		ErrorTxt.GetComponent<Text>().text = "All player prefs cleared!";
 	}
 }
