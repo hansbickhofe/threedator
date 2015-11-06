@@ -83,8 +83,6 @@ public class TDSocketIO : MonoBehaviour
 		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
 
 		r_id = jo["id"].str;
-		print ("ddd: "+r_id);
-
 		r_posX = float.Parse(jo["posX"].str);
 		r_posZ = float.Parse(jo["posZ"].str);
 		r_targetX = float.Parse(jo["targetX"].str);
@@ -135,6 +133,11 @@ public class TDSocketIO : MonoBehaviour
 			string playername;
 
 			if (r_id == PlayerScript.id){ // eigenes ship finden
+
+				// tag für eigenen Spieler setzen
+				newShip.tag = "Player";
+
+				//teamfarbe setzen
 				if (PlayerScript.team == "red") playerColor = Color.red;
 				else if (PlayerScript.team == "green") playerColor = Color.green;
 				else if (PlayerScript.team == "blue") playerColor = Color.blue;
@@ -142,6 +145,10 @@ public class TDSocketIO : MonoBehaviour
 
 				playername = PlayerScript.playername;
 			} else {
+
+				// tag für Ememy setzen
+				newShip.tag = "Enemy";
+
 				// später color und name der gegner mitsenden
 				playerColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
 				playername = "?";
