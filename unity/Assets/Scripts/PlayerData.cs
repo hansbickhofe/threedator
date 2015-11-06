@@ -10,13 +10,13 @@ public class PlayerData : MonoBehaviour {
 
 	public string id;
 	public string playername;
-	public string color;
+	public string team;
 
 	// Use this for initialization
 	void Start () {
 		id = PlayerPrefs.GetString("ID");
 		playername = PlayerPrefs.GetString("PLAYER");
-		color = PlayerPrefs.GetString("COLOR");
+		team = PlayerPrefs.GetString("TEAM");
 	}
 	
 	// Update is called once per frame

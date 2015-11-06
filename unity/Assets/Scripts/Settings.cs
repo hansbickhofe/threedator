@@ -15,8 +15,7 @@ public class Settings : MonoBehaviour {
 	public string pID;
 	public string pName;
 	public string pPW;
-	public string pColor;
-	//public string pTeam;
+	public string pTeam;
 	//public string roomID;
 	public string loginurl = "https://threedator.appspot.com/admin.checklogin";
 	// public string loginurl = "http://localhost:24080/admin.checklogin";
@@ -26,8 +25,7 @@ public class Settings : MonoBehaviour {
 	
 	InputField InputName;
 	InputField InputPW;
-	InputField InputColor;
-	InputField InputTeam;
+	GameObject ButtonTeam;
 	InputField InputRoomID;
 	InputField InputUrl;
 
@@ -35,8 +33,7 @@ public class Settings : MonoBehaviour {
 		//access input fields
 		InputName = GameObject.Find("InputFieldPlayer").GetComponent<InputField>();
 		InputPW = GameObject.Find("InputFieldPW").GetComponent<InputField>();
-		InputColor = GameObject.Find("InputFieldColor").GetComponent<InputField>();
-		//InputTeam = GameObject.Find("InputFieldTeam").GetComponent<InputField>();
+		ButtonTeam = GameObject.Find("ButtonTeam");
 		//InputRoomID = GameObject.Find("InputFieldRoomID").GetComponent<InputField>();
 		//InputUrl = GameObject.Find("InputFieldURL").GetComponent<InputField>();
 		//reset error message
@@ -52,21 +49,55 @@ public class Settings : MonoBehaviour {
 	}
 
 	void ReadLocalPrefs(){
+		Text ButtonTeamText = ButtonTeam.GetComponentInChildren<Text>();
+		Image ButtonTeamColor = ButtonTeam.GetComponent<Image>();
+
 		// re-fill input fields from local prefs
-		InputName.text = PlayerPrefs.GetString("PLAYER");
-		InputPW.text = PlayerPrefs.GetString("PASSWORD");
-		InputColor.text = PlayerPrefs.GetString("COLOR");
-		//InputTeam.text = PlayerPrefs.GetString("TEAM");
+		if (PlayerPrefs.HasKey("PLAYER")) {
+			InputName.text = PlayerPrefs.GetString("PLAYER");
+		}
+
+		if (PlayerPrefs.HasKey("PASSWORD")) {
+			InputPW.text = PlayerPrefs.GetString("PASSWORD");
+		}
+
+		if (PlayerPrefs.HasKey("TEAM")) {
+			ButtonTeamText.text = PlayerPrefs.GetString("TEAM");
+		}
+
+		if (ButtonTeamText.text == "red") ButtonTeamColor.color = Color.red;
+		else if (ButtonTeamText.text == "green") ButtonTeamColor.color = Color.green;
+		else if (ButtonTeamText.text == "blue") ButtonTeamColor.color = Color.blue;
+	
 		//InputRoomID.text = PlayerPrefs.GetString("ROOM");
 		//InputUrl.text = PlayerPrefs.GetString("URL");
 	}
 
 	// on button click "SET"
+	public void SetTeam(){
+		Text ButtonTeamText = ButtonTeam.GetComponentInChildren<Text>();
+		Image ButtonTeamColor = ButtonTeam.GetComponent<Image>();
+
+		if (ButtonTeamText.text == "red") {
+			ButtonTeamText.text = "blue";
+			ButtonTeamColor.color = Color.blue;
+		} else if (ButtonTeamText.text == "blue"){
+			ButtonTeamText.text = "green";
+			ButtonTeamColor.color = Color.green;
+		} else if (ButtonTeamText.text == "green"){
+			ButtonTeamText.text = "red";
+			ButtonTeamColor.color = Color.red;
+		}
+
+	}
+
+	// on button click "SET"
 	public void SetFormData(){
+		Text ButtonTeamText = ButtonTeam.GetComponentInChildren<Text>();
 		pName = InputName.text;
 		pPW = InputPW.text;
-		pColor = InputColor.text;
-		//pTeam = InputTeam.text;
+		pTeam = ButtonTeamText.text;
+		print(pTeam);
 		//roomID = InputRoomID.text;
 		//url = InputUrl.text;
 		
@@ -77,8 +108,7 @@ public class Settings : MonoBehaviour {
 		PlayerPrefs.SetString("ID", pID);
 		PlayerPrefs.SetString("PLAYER", pName);
 		PlayerPrefs.SetString("PASSWORD", pPW); // später nicht mehr in die prefs schreiben
-		PlayerPrefs.SetString("COLOR", pColor); // später nicht mehr in die prefs schreiben
-		//PlayerPrefs.SetString("TEAM", pTeam);
+		PlayerPrefs.SetString("TEAM", pTeam);
 		//PlayerPrefs.SetString("ROOM", roomID);
 		//PlayerPrefs.SetString("URL", url);
 	}
@@ -119,11 +149,11 @@ public class Settings : MonoBehaviour {
 	}
 
 	public void ClearScores(){
+		Text ButtonTeamText = ButtonTeam.GetComponentInChildren<Text>();
 		// clear input fields
 		InputName.text = "";
 		InputPW.text = "";
-		InputColor.text = "";
-		//InputTeam.text = "";
+		ButtonTeamText.text = "";
 		//InputRoomID.text = "";
 		
 		// delete player prefs

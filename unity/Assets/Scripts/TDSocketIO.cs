@@ -135,7 +135,11 @@ public class TDSocketIO : MonoBehaviour
 			string playername;
 
 			if (r_id == PlayerScript.id){ // eigenes ship finden
-				playerColor = new Color (1.0f,1.0f,1.0f);
+				if (PlayerScript.team == "red") playerColor = Color.red;
+				else if (PlayerScript.team == "green") playerColor = Color.green;
+				else if (PlayerScript.team == "blue") playerColor = Color.blue;
+				else playerColor = Color.red; //default
+
 				playername = PlayerScript.playername;
 			} else {
 				// später color und name der gegner mitsenden
