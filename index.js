@@ -34,95 +34,98 @@ function getpos(box) {
 pos = [];
 pos['x'] = Math.random() * (xmax - xmin) + xmin;
 pos['z'] = Math.random() * (zmax - zmin) + zmin;
-//posstring = "{ id: '"+ box + "', posX: '"+ pos['x'] +"', posZ: '"+ pos['z'] +"', targetX: '"+ pos['x'] +"', targetZ: '"+ pos['z'] +"', time: 0}";
-posstring = "{ id: '"+ box + "',\n  posX: '0',\n  posZ: '0',\n  targetX: '"+ pos['x'] +"', \n  targetZ: '"+ pos['z'] +"',\n  time: 0\n}";
+var posstring = { id: box.toString(), posX: pos['x'].toString(), posZ: pos['z'].toString(), targetX: pos['x'].toString(), targetZ: pos['z'].toString(), time: "0" };
 return posstring;
 }
-munition["333"] = getpos(333)
-// munition["666"] = getpos(666);
-// munition["999"] = getpos(999);
+munition[333] = getpos(333);
+munition[1] = getpos(666);
+munition[2] = getpos(999);
+
+setInterval(emitMunipositions, 3000);
 
 function emitMunipositions() {
 
 //  emit muni positions
-  console.log(munition["333"]);
-//  console.log("channelname" + munition["666"]);
-//  console.log("channelname" + munition["999"]);
-
-  io.emit('channelname', munition["333"]);
-//  io.emit('channelname', munition["666"]);
-//  io.emit('channelname', munition["999"]);
+  io.emit('muni', munition[333]);
+  io.emit('muni', munition[1]);
+  io.emit('muni', munition[2]);
 }
 
-
-setInterval(emitMunipositions, 5000);
 io.on('connection', function(socket){
-
 
   //recv Pos
   socket.on('channelname', function(msg){
     if(msg){
-      console.log(msg);
+      // console.log(msg);
     }
     io.emit('channelname',msg);
   });
 
-  //got hit
-  socket.on('fire', function(msg){
-    if(msg){
-      console.log('fire: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+// pick up munition
+  socket.on('gotit', function(msg) {
+    if(msg) {
+      var p_ID = msg.p_id;
+      var k_ID = msg.k_id;
+      munition[k_ID] = getpos(k_ID);
+      io.emit('muni', munition[k_ID]);
     }
-    io.emit('fire',msg);
+  });
+
+  //got hit
+  socket.on('hit', function(msg){
+    if(msg){
+      // console.log('hit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+    }
+    io.emit('hit',msg);
   });
 
   //logon from user (failed for testing)
-  socket.on('logon', function(msg){
-    if(msg){
-
-			var post_data = querystring.stringify({
-				'playername' : msg.login,
-				'password': msg.password
-				});
-
-
-			var post_options = {
-	      host: 'threedator.appspot.com',
-	      port: '443',
-	      path: '/admin.checklogin',
-	      method: 'POST',
-	      headers: {
-	          'Content-Type': 'application/x-www-form-urlencoded',
-	          'Content-Length': Buffer.byteLength(post_data)
-	      }
-  		};
-      var emitMsg;
-      var logonstatus;
-      var post_req = https.request(post_options, function(res) {
-
-
-      res.setEncoding('utf8');
-      res.on('data', function (chunk) {
-      var jsonResponse = JSON.parse(chunk);
-        if (jsonResponse[0].logonack) {
-          logonstatus = jsonResponse[0].logonack;
-          emitMsg = "logonack";
-        }
-        else if (jsonResponse[0].logonnack) {
-          logonstatus = jsonResponse[0].logonnack;
-          emitMsg = "logonnack";
-        }
-          console.log(emitMsg + ': ' + JSON.stringify(logonstatus));
-          io.emit(emitMsg, JSON.stringify(logonstatus));
-	      });
-	  	});
-			// post the data
-		  post_req.write(post_data);
-		  post_req.end();
-
-    }
-  });
+  // socket.on('logon', function(msg){
+  //   if(msg){
+  //
+	// 		var post_data = querystring.stringify({
+	// 			'playername' : msg.login,
+	// 			'password': msg.password
+	// 			});
+  //
+  //
+	// 		var post_options = {
+	//       host: 'threedator.appspot.com',
+	//       port: '443',
+	//       path: '/admin.checklogin',
+	//       method: 'POST',
+	//       headers: {
+	//           'Content-Type': 'application/x-www-form-urlencoded',
+	//           'Content-Length': Buffer.byteLength(post_data)
+	//       }
+  // 		};
+  //     var emitMsg;
+  //     var logonstatus;
+  //     var post_req = https.request(post_options, function(res) {
+  //
+  //
+  //     res.setEncoding('utf8');
+  //     res.on('data', function (chunk) {
+  //     var jsonResponse = JSON.parse(chunk);
+  //       if (jsonResponse[0].logonack) {
+  //         logonstatus = jsonResponse[0].logonack;
+  //         emitMsg = "logonack";
+  //       }
+  //       else if (jsonResponse[0].logonnack) {
+  //         logonstatus = jsonResponse[0].logonnack;
+  //         emitMsg = "logonnack";
+  //       }
+  //         console.log(emitMsg + ': ' + JSON.stringify(logonstatus));
+  //         io.emit(emitMsg, JSON.stringify(logonstatus));
+	//       });
+	//   	});
+	// 		// post the data
+	// 	  post_req.write(post_data);
+	// 	  post_req.end();
+  //
+  //   }
+  // });
 });
-
 
 http.listen(PORT,function(){
         console.log('listening on *:'+ PORT);

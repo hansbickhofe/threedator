@@ -9,7 +9,7 @@
       #C { width:180px;height:750px;cursor:pointer;background:#2f2f2f;position:absolute;top:60px;color:#fff;font:bold 10px Arial; }
       #X { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #Y { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
-      #myimg { position: absolute; z-index: 1000; }
+      #myimg { position: absolute; z-index: 1000; border-spacing: 0;}
     </style>
     <script src="js/socket.io-1.2.0.js"></script>
     <script src="js/jquery-1.11.1.js"></script>
@@ -35,6 +35,15 @@
       <input type="text" size=5 id="targetid" value="2"/>
       <br>
       <button id='fire'/>Fire</button><br><br>
+      <hr>
+      Pickup:
+      ShipID<BR>
+      <input type="text" size=5 id="playerid" />
+      <br>
+      TargetID<BR>
+      <input type="text" size=5 id="kistenid" />
+      <br>
+      <button id='gotit'/>gotit</button><br><br>
     </div>
 
     <div id="C" style="left:830px;"></div>
@@ -52,12 +61,29 @@
         }
 
         $.each(msg,function(key,value){
-          $("#C").append(key+' '+value+' <bR>');
+          $("#C").append(key+' '+value+' <br>');
           });
         $("#C").append('<hr>');
         msg_counter++;
 
       }
+
+    function angle(cx, cy, ex, ey) {
+      var dy = ey - cy;
+      var dx = ex - cx;
+      var theta = Math.atan2(dy, dx); // range (-PI, PI]
+      theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+      //if (theta < 0) theta = 360 + theta; // range [0, 360)
+
+      return theta;
+    }
+
+    function angle360(cx, cy, ex, ey) {
+      var theta = angle(cx, cy, ex, ey); // range (-180, 180]
+      if (theta < 0) theta = 360 + theta; // range [0, 360)
+
+      return theta;
+}
 
     $(document).ready(function(e) {
 
@@ -71,22 +97,41 @@
       socket.emit('fire', sendshot);
     });
 
+    $('#gotit').click(function(e) {
+      var sendgotit = {p_id: $('#playerid').val(), k_id: $('#kistenid').val(), time: 0};
+      socket.emit('gotit', sendgotit);
+    });
+
     $('#A').click(function(e) {
+      var lastpos = $("#myimg").position(); // returns an object with the attribute top and left
+      lastpos.top;  // top offset position
+      lastpos.left; // left offset position
+      var posX = e.pageX ,posY = e.pageY;
 
-        var posX = e.pageX ,posY = e.pageY;
+      $("#X").text('X: '+posX)
+      $("#Y").text('Y: '+posY)
 
-        $("#X").text('X: '+posX)
-        $("#Y").text('Y: '+posY)
-
-        var sendpos = { id: $('#shipid').val(), xPos: posX, yPos: posY, time: 0};
-        socket.emit('channelname', sendpos);
-        $('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
-
+      var sendpos = { id: $('#shipid').val(), posX: lastpos.left, posZ: lastpos.top, targetX: posX, targetZ: posY, time: 0};
+      socket.emit('channelname', sendpos);
+      //$('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
 
     });
     socket.on('channelname', function(msg){
+      var rotation = angle360(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
+      console.log(rotation);
       $("#C").append(msg);
-      // $('.follow').css({'top': msg.xPos - 20, 'left': msg.zPos - 20});
+
+      $('.follow').animate({  borderSpacing: -90 }, {
+        step: function(now,fx) {
+          $('.follow').css('-webkit-transform','rotate('+rotation+')');
+          $('.follow').css('-moz-transform','rotate('+rotation+')');
+          $('.follow').css('transform','rotate('+rotation+')');
+        },
+        duration:'slow'
+      },'linear');
+
+      $('.follow').animate({'top': msg.targetZ - 20, 'left': msg.targetX - 20},1500);
+
       syncInputVal(msg);
     });
 
@@ -95,12 +140,12 @@
       syncInputVal(msg);
     });
 
-    socket.on('logonnack', function(msg){
+    socket.on('muni', function(msg){
       $("#C").append(msg);
       syncInputVal(msg);
     });
 
-    socket.on('muni'), function(msg){
+    socket.on('logonnack', function(msg){
       $("#C").append(msg);
       syncInputVal(msg);
     });
