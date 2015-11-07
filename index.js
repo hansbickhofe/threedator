@@ -38,8 +38,8 @@ var posstring = { id: box.toString(), posX: pos['x'].toString(), posZ: pos['z'].
 return posstring;
 }
 munition[333] = getpos(333);
-munition[1] = getpos(666);
-munition[2] = getpos(999);
+munition[666] = getpos(666);
+munition[999] = getpos(999);
 
 setInterval(emitMunipositions, 3000);
 
@@ -47,8 +47,8 @@ function emitMunipositions() {
 
 //  emit muni positions
   io.emit('muni', munition[333]);
-  io.emit('muni', munition[1]);
-  io.emit('muni', munition[2]);
+  io.emit('muni', munition[666]);
+  io.emit('muni', munition[999]);
 }
 
 io.on('connection', function(socket){
