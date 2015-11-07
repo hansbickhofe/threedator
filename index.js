@@ -59,10 +59,10 @@ function emitMunipositions() {
 
 function blockMuni(muniID) {
     muniblock[muniID] = 1 ;
-    console.log("blocked "+ muniID);
+    // console.log("blocked "+ muniID);
 
     setTimeout(function(){
-      console.log("unblocked " + muniID)
+      // console.log("unblocked " + muniID)
       muniblock[muniID] = 0 ;
       munition[muniID] = getpos(muniID);
       io.emit('muni', munition[muniID]);
@@ -85,7 +85,7 @@ io.on('connection', function(socket){
       var p_ID = msg.p_id;
       var k_ID = msg.k_id;
       if (muniblock[k_ID] == 0) {
-        console.log("blocking "+ k_ID);
+        // console.log("blocking "+ k_ID);
         blockMuni(k_ID);
       }
     }
