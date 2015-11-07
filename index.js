@@ -39,8 +39,8 @@ posstring = "{ id: '"+ box + "',\n  posX: '0',\n  posZ: '0',\n  targetX: '"+ pos
 return posstring;
 }
 munition["333"] = getpos(333)
-munition["666"] = getpos(666);
-munition["999"] = getpos(999);
+// munition["666"] = getpos(666);
+// munition["999"] = getpos(999);
 
 function emitMunipositions() {
 
