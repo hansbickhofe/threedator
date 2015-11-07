@@ -39,12 +39,13 @@ public class TDSocketIO : MonoBehaviour
 	float r_targetX;
 	float r_targetZ;
 	int r_shipTime;
-	
+
 	public void Start() {
 		// connect to socketIO
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
 		socket.On ("channelname",receiveSocketData);
+		socket.On ("muni",receiveSocketData);
 	}
 
 	public void Update(){
@@ -69,9 +70,9 @@ public class TDSocketIO : MonoBehaviour
 		json.Add("targetX",targetX.ToString());
 		json.Add("targetZ",targetZ.ToString());
 		json.Add("time",shipTime.ToString());
-		
+
 		socket.Emit("channelname",new JSONObject(json));
-		
+
 		//print ("json send: "+json);
 	}
 
@@ -88,6 +89,7 @@ public class TDSocketIO : MonoBehaviour
 		r_targetX = float.Parse(jo["targetX"].str);
 		r_targetZ = float.Parse(jo["targetZ"].str);
 		r_shipTime = int.Parse(jo["time"].str);
+		print("id "+jo["id"].str);
 		ProcessData();
 		CleanupOldData();
 	}
@@ -96,7 +98,7 @@ public class TDSocketIO : MonoBehaviour
 	void ProcessData(){
 
 		bool idFound = false;
-		
+
 		// check if id already exists
 		arraySize = allShips.Count;
 
@@ -118,7 +120,7 @@ public class TDSocketIO : MonoBehaviour
 				break;
 			}
 		}
-		
+
 		// neue id eintragen
 		if (!idFound){
 
@@ -128,7 +130,7 @@ public class TDSocketIO : MonoBehaviour
 			newShip = Instantiate(ship, spawnPosition, transform.rotation) as GameObject;
 			print("hello"+arraySize);
 
-			//color 
+			//color
 			Color playerColor;
 			string playername;
 
@@ -172,7 +174,7 @@ public class TDSocketIO : MonoBehaviour
 	// look for unused player objects after shiptime (sec.)
 	void CleanupOldData(){
 		arraySize = allShips.Count;
-		
+
 		for (int i = 0; i<arraySize; i++){
 			if (allShips[i].time > lifeTime) {
 				//ship object und array eintrag löschen
@@ -187,7 +189,7 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 
-	// hex to rgb converter 
+	// hex to rgb converter
 //	Color HexToColor(string hex){
 //		byte r = byte.Parse(hex.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
 //		byte g = byte.Parse(hex.Substring(2,2), System.Globalization.NumberStyles.HexNumber);
