@@ -30,6 +30,11 @@ var zmax = 25;
 // max anzahl kisten
 var maxcount = 3;
 var muniblock = [];
+muniblock[333] = 0;
+muniblock[666] = 0;
+muniblock[999] = 0;
+
+var muniID=0;
 
 function getpos(box) {
 pos = [];
@@ -55,12 +60,14 @@ function emitMunipositions() {
 function blockMuni(muniID) {
     muniblock[muniID] = 1 ;
     console.log("blocked "+ muniID);
-    setTimeout(function(muniID) {
-      muniblock[muniID] = 0 ;
-      console.log("unblocked "+ muniID);
-      munition[k_ID] = getpos(k_ID);
-      io.emit('muni', munition[k_ID]);
-    }, 3000);
+    setTimeout(unblockMuni(muniID), 3000);
+}
+
+function unblockMuni(muniID) {
+  console.log("unblocked " + muniID);
+  munition[muniID] = getpos(muniID);
+  muniblock[muniID] = 0 ;
+  io.emit('muni', munition[muniID]);
 }
 
 io.on('connection', function(socket){
@@ -79,8 +86,8 @@ io.on('connection', function(socket){
       var p_ID = msg.p_id;
       var k_ID = msg.k_id;
       if (muniblock[k_ID] == 0) {
-        console.log("blocking "+ muniID);
-        blockMuni(msg.k_id);
+        console.log("blocking "+ k_ID);
+        blockMuni(k_ID);
       }
     }
   });
