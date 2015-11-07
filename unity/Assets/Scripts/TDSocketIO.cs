@@ -31,7 +31,12 @@ public class TDSocketIO : MonoBehaviour
 	float targetZ;
 	int shipTime;
 
-	// received data
+	// received muni data
+	string m_id;
+	float m_posX;
+	float m_posZ;
+
+	// received player data
 	public GameObject r_ship;
 	string r_id;
 	float r_posX;
@@ -83,19 +88,31 @@ public class TDSocketIO : MonoBehaviour
 		JSONObject jo = e.data as JSONObject;
 		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
 
-		r_id = jo["id"].str;
-		r_posX = float.Parse(jo["posX"].str);
-		r_posZ = float.Parse(jo["posZ"].str);
-		r_targetX = float.Parse(jo["targetX"].str);
-		r_targetZ = float.Parse(jo["targetZ"].str);
-		r_shipTime = int.Parse(jo["time"].str);
-		print("id "+jo["id"].str);
-		ProcessData();
-		CleanupOldData();
+
+		// ID's filtern
+		if (jo ["id"].str == "333" || jo ["id"].str == "666" || jo ["id"].str == "999") {
+			//muni
+			m_id = jo["id"].str;
+			m_posX = float.Parse(jo["posX"].str);
+			m_posZ = float.Parse(jo["posZ"].str);
+			print("id "+jo["id"].str);
+			//ProcessMuniData();
+		} else {
+			//andere spieler
+			r_id = jo["id"].str;
+			r_posX = float.Parse(jo["posX"].str);
+			r_posZ = float.Parse(jo["posZ"].str);
+			r_targetX = float.Parse(jo["targetX"].str);
+			r_targetZ = float.Parse(jo["targetZ"].str);
+			r_shipTime = int.Parse(jo["time"].str);
+			print("id "+jo["id"].str);
+			ProcessPlayerData();
+			CleanupPlayerData();
+		}
 	}
 
 	// process
-	void ProcessData(){
+	void ProcessPlayerData(){
 
 		bool idFound = false;
 
@@ -123,7 +140,6 @@ public class TDSocketIO : MonoBehaviour
 
 		// neue id eintragen
 		if (!idFound){
-
 			//ship an random pos mit random color erzeugen
 			GameObject newShip;
 			Vector3 spawnPosition = new Vector3(r_posX,2,r_posZ);
@@ -172,7 +188,7 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 	// look for unused player objects after shiptime (sec.)
-	void CleanupOldData(){
+	void CleanupPlayerData(){
 		arraySize = allShips.Count;
 
 		for (int i = 0; i<arraySize; i++){
