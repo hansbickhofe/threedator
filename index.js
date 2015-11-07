@@ -79,6 +79,7 @@ io.on('connection', function(socket){
       var p_ID = msg.p_id;
       var k_ID = msg.k_id;
       if (muniblock[k_ID] == 0) {
+        console.log("blocking "+ muniID);
         blockMuni(msg.k_id);
       }
     }
