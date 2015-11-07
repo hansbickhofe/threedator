@@ -20,12 +20,49 @@ app.get('/',function(req,res){
         res.sendFile(__dirname + '/public/index.html');
 });
 
+// kisten array
+var munition = [];
+// grÃ¶ÃŸe des spielfelds
+var xmin = -15;
+var xmax = 15;
+var zmin = -25;
+var zmax = 25;
+// max anzahl kisten
+var maxcount = 3;
+
+function getpos(box) {
+pos = [];
+pos['x'] = Math.random() * (xmax - xmin) + xmin;
+pos['z'] = Math.random() * (zmax - zmin) + zmin;
+//posstring = "{ id: '"+ box + "', posX: '"+ pos['x'] +"', posZ: '"+ pos['z'] +"', targetX: '"+ pos['x'] +"', targetZ: '"+ pos['z'] +"', time: 0}";
+posstring = "{ id: '"+ box + "',\n  posX: '0',\n  posZ: '0',\n  targetX: '"+ pos['x'] +"', \n  targetZ: '"+ pos['z'] +"',\n  time: 0\n}";
+return posstring;
+}
+munition["333"] = getpos(333)
+munition["666"] = getpos(666);
+munition["999"] = getpos(999);
+
+function emitMunipositions() {
+
+//  emit muni positions
+  console.log(munition["333"]);
+//  console.log("channelname" + munition["666"]);
+//  console.log("channelname" + munition["999"]);
+
+  io.emit('channelname', munition["333"]);
+//  io.emit('channelname', munition["666"]);
+//  io.emit('channelname', munition["999"]);
+}
+
+
+setInterval(emitMunipositions, 5000);
 io.on('connection', function(socket){
+
 
   //recv Pos
   socket.on('channelname', function(msg){
     if(msg){
-      console.log('channelname: (' + msg.id + "," + msg.xPos + "," + msg.yPos + "," + msg.time +")");
+      console.log(msg);
     }
     io.emit('channelname',msg);
   });
@@ -58,11 +95,24 @@ io.on('connection', function(socket){
 	          'Content-Length': Buffer.byteLength(post_data)
 	      }
   		};
+      var emitMsg;
+      var logonstatus;
+      var post_req = https.request(post_options, function(res) {
 
-			var post_req = https.request(post_options, function(res) {
-	      res.setEncoding('utf8');
-	      res.on('data', function (chunk) {
-	          console.log('Response: ' + chunk);
+
+      res.setEncoding('utf8');
+      res.on('data', function (chunk) {
+      var jsonResponse = JSON.parse(chunk);
+        if (jsonResponse[0].logonack) {
+          logonstatus = jsonResponse[0].logonack;
+          emitMsg = "logonack";
+        }
+        else if (jsonResponse[0].logonnack) {
+          logonstatus = jsonResponse[0].logonnack;
+          emitMsg = "logonnack";
+        }
+          console.log(emitMsg + ': ' + JSON.stringify(logonstatus));
+          io.emit(emitMsg, JSON.stringify(logonstatus));
 	      });
 	  	});
 			// post the data
@@ -70,7 +120,6 @@ io.on('connection', function(socket){
 		  post_req.end();
 
     }
-    io.emit('logonnack',msg.login);
   });
 });
 
