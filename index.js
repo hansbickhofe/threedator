@@ -41,7 +41,7 @@ munition[333] = getpos(333);
 munition[666] = getpos(666);
 munition[999] = getpos(999);
 
-setInterval(emitMunipositions, 3000);
+setInterval(emitMunipositions, 4000);
 
 function emitMunipositions() {
 
