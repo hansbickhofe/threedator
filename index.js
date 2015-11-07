@@ -60,14 +60,13 @@ function emitMunipositions() {
 function blockMuni(muniID) {
     muniblock[muniID] = 1 ;
     console.log("blocked "+ muniID);
-    setTimeout(unblockMuni(muniID), 3000);
-}
 
-function unblockMuni(muniID) {
-  console.log("unblocked " + muniID);
-  munition[muniID] = getpos(muniID);
-  muniblock[muniID] = 0 ;
-  io.emit('muni', munition[muniID]);
+    setTimeout(function(){
+      console.log("unblocked " + muniID)
+      muniblock[muniID] = 0 ;
+      munition[muniID] = getpos(muniID);
+      io.emit('muni', munition[muniID]);
+    }, 3000);
 }
 
 io.on('connection', function(socket){
