@@ -57,8 +57,10 @@ function emitMunipositions() {
   io.emit('muni', munition[999]);
 }
 
-function blockMuni(muniID) {
+function blockMuni(muniID,playerID) {
     muniblock[muniID] = 1 ;
+    var playerIDtoSend = { id: playerID.toString() } ;
+    io.emit('gotby',playerIDtoSend) ;
     // console.log("blocked "+ muniID);
 
     setTimeout(function(){
@@ -79,14 +81,21 @@ io.on('connection', function(socket){
     io.emit('channelname',msg);
   });
 
+  socket.on('test', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('test',msg);
+  });
+
 // pick up munition
   socket.on('gotit', function(msg) {
     if(msg) {
-      var p_ID = msg.p_id;
-      var k_ID = msg.k_id;
+      var p_ID = msg.p_id ;
+      var k_ID = msg.k_id ;
       if (muniblock[k_ID] == 0) {
-        // console.log("blocking "+ k_ID);
-        blockMuni(k_ID);
+        // console.log("blocking "+ k_ID) ;
+        blockMuni(k_ID,p_ID);
       }
     }
   });
