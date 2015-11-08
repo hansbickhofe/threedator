@@ -25,8 +25,8 @@ var munition = [];
 // grÃ¶ÃŸe des spielfelds
 var xmin = -15;
 var xmax = 15;
-var zmin = -25;
-var zmax = 25;
+var zmin = -21;
+var zmax = 21;
 // max anzahl kisten
 var maxcount = 3;
 var muniblock = [];
