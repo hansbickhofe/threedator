@@ -11,6 +11,7 @@ public class TDSocketIO : MonoBehaviour
 	private SocketIOComponent socket;
 
 	//scripts
+	public Game GameScript;
 	public PlayerData PlayerScript;
 	public SetTargetCourse TargetScript;
 
@@ -30,6 +31,12 @@ public class TDSocketIO : MonoBehaviour
 	float targetX;
 	float targetZ;
 	int shipTime;
+
+	//muni
+	public GameObject Muni;
+	public int muniAmmount;
+	GameObject[] MuniArray = new GameObject[3]; 
+	Vector3 spawnPosition;
 
 	// received muni data
 	string m_id;
@@ -51,6 +58,7 @@ public class TDSocketIO : MonoBehaviour
 		socket = go.GetComponent<SocketIOComponent>();
 		socket.On ("channelname",receiveSocketData);
 		socket.On ("muni",receiveSocketData);
+		CreateMunition();
 	}
 
 	public void Update(){
@@ -66,6 +74,16 @@ public class TDSocketIO : MonoBehaviour
 		}
 	}
 
+	// create 3 initial muni packs
+	public void CreateMunition(){
+		for (int i=0; i<muniAmmount; i++){
+			GameObject newMuni = Instantiate(Muni, Vector3.zero, Quaternion.identity) as GameObject;
+			newMuni.SetActive(false);
+			MuniArray[i] = newMuni; // push to array
+			newMuni.transform.parent = GameObject.Find("Munition").transform; //make child of empty game object
+		}
+	}
+
 	// send data
 	public void SendJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
@@ -77,8 +95,6 @@ public class TDSocketIO : MonoBehaviour
 		json.Add("time",shipTime.ToString());
 
 		socket.Emit("channelname",new JSONObject(json));
-
-		//print ("json send: "+json);
 	}
 
 
@@ -86,8 +102,6 @@ public class TDSocketIO : MonoBehaviour
 	public void receiveSocketData(SocketIOEvent e){
 		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
 		JSONObject jo = e.data as JSONObject;
-		//print ("-> "+ jo["id"].str +" "+ jo["xPos"].str +" "+ jo["yPos"].str+" "+ jo["time"].str);
-
 
 		// ID's filtern
 		if (jo ["id"].str == "333" || jo ["id"].str == "666" || jo ["id"].str == "999") {
@@ -96,7 +110,7 @@ public class TDSocketIO : MonoBehaviour
 			m_posX = float.Parse(jo["posX"].str);
 			m_posZ = float.Parse(jo["posZ"].str);
 			print("id "+jo["id"].str);
-			//ProcessMuniData();
+			ProcessMuniData();
 		} else {
 			//andere spieler
 			r_id = jo["id"].str;
@@ -109,6 +123,22 @@ public class TDSocketIO : MonoBehaviour
 			ProcessPlayerData();
 			CleanupPlayerData();
 		}
+	}
+
+	void ProcessMuniData(){
+		//translate muni id (z.b.333,666,999) to array position -> return 0,1,2
+		int arrayPos = (int.Parse (m_id) / 333) - 1;
+		// show muni & set position
+		MuniArray[arrayPos].SetActive (true);
+		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
+	}
+
+	public void SendMuniHit(){
+		//Send hit to server
+		// wait for return
+		//score player
+		print ("hit!");
+		PlayerScript.score ++;
 	}
 
 	// process
@@ -171,8 +201,6 @@ public class TDSocketIO : MonoBehaviour
 				playerColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
 				playername = "?";
 			}
-
-			//randomColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
 
 			//color und name setzen
 			newShip.GetComponent<Renderer>().material.SetColor("_Color", playerColor);
