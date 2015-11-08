@@ -104,7 +104,6 @@ io.on('connection', function(socket){
   //got hit
   socket.on('gothit', function(msg){
     if(msg){
-
       var post_data = querystring.stringify({
   			'playerID' : msg.id,
   			'enemyID': msg.enemyID
