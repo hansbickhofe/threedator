@@ -61,8 +61,8 @@ function blockMuni(muniID,playerID) {
     muniblock[muniID] = 1 ;
     var playerIDtoSend = { id: playerID.toString() } ;
     io.emit('gotby',playerIDtoSend) ;
-    console.log("gotby "+ playerID);
-    console.log("blocked "+ muniID);
+    // console.log("gotby "+ playerID);
+    // console.log("blocked "+ muniID);
 
     setTimeout(function(){
       // console.log("unblocked " + muniID)
@@ -81,7 +81,7 @@ io.on('connection', function(socket){
     }
     io.emit('channelname',msg);
   });
-
+// test keyword unity
   socket.on('test', function(msg){
     if(msg){
       // console.log(msg);
@@ -102,12 +102,19 @@ io.on('connection', function(socket){
   });
 
   //got hit
-  socket.on('hit', function(msg){
+  socket.on('gothit', function(msg){
     if(msg){
-      // console.log('hit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
-    }
-    io.emit('hit',msg);
+      console.log('gothit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+      io.emit('gothit',msg);
   });
+
+  socket.on('fire', function(msg){
+    if(msg){
+      console.log('fire: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+      io.emit('fire',msg);
+    }
+
+
 
   //logon from user (failed for testing)
   // socket.on('logon', function(msg){
