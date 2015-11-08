@@ -61,7 +61,8 @@ function blockMuni(muniID,playerID) {
     muniblock[muniID] = 1 ;
     var playerIDtoSend = { id: playerID.toString() } ;
     io.emit('gotby',playerIDtoSend) ;
-    // console.log("blocked "+ muniID);
+    console.log("gotby "+ playerID);
+    console.log("blocked "+ muniID);
 
     setTimeout(function(){
       // console.log("unblocked " + muniID)
