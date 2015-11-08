@@ -7,9 +7,11 @@
       #A { width:600px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #B { width:103px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #C { width:180px;height:750px;cursor:pointer;background:#2f2f2f;position:absolute;top:60px;color:#fff;font:bold 10px Arial; }
+      #D { width:600px;height:80px;cursor:pointer;background:#afafaf;position:absolute;top:730px;color:#000;font:bold 15px Arial; }
       #X { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #Y { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #myimg { position: absolute; z-index: 1000; border-spacing: 0;}
+      input[type=range]::-webkit-slider-runnable-track { width: 500px;height: 10px;background: #ddd;}
     </style>
     <script src="js/socket.io-1.2.0.js"></script>
     <script src="js/jquery-1.11.1.js"></script>
@@ -27,12 +29,12 @@
       <br>
       <button id='logon'/>Logon</button><br><br>
       <hr>
-      FIRE:
+      FIRE:<br>
       ShipID<BR>
       <input type="text" size=5 id="shipid" value="1"/>
       <br>
-      TargetID<BR>
-      <input type="text" size=5 id="targetid" value="2"/>
+      Angle<BR>
+      <input type="text" size=5 id="angle" />
       <br>
       <button id='fire'/>Fire</button><br><br>
       <hr>
@@ -44,11 +46,16 @@
       <input type="text" size=5 id="kistenid" />
       <br>
       <button id='gotit'/>gotit</button><br><br>
+
     </div>
 
     <div id="C" style="left:830px;"></div>
     <div id="X" style="left:830px;"></div>
     <div id="Y" style="left:930px;"></div>
+    <div id="D" style="left:70px;">
+      Fire Angle<br>
+      <input id="angleslide" type="range" min="-180" max="180" step="10" value="0"/>
+    </div>
     <br>
 
     <script>
@@ -93,7 +100,7 @@
     });
 
     $('#fire').click(function(e) {
-      var sendshot = {id: $('#shipid').val(), tid: $('#targetid').val(), time: 0};
+      var sendshot = {id: $('#shipid').val(), posX: $('#X').val(), posY: $('#Y').val(), angle: $('#angle').val(), time: 0};
       socket.emit('fire', sendshot);
     });
 
@@ -102,20 +109,28 @@
       socket.emit('gotit', sendgotit);
     });
 
+    $('#angleslide').change(function() {
+      var sliderValue = $(this).val();
+      $("#angle").val(sliderValue);
+
+    });
+
     $('#A').click(function(e) {
       var lastpos = $("#myimg").position(); // returns an object with the attribute top and left
       lastpos.top;  // top offset position
       lastpos.left; // left offset position
       var posX = e.pageX ,posY = e.pageY;
 
-      $("#X").text('X: '+posX)
-      $("#Y").text('Y: '+posY)
+      $("#X").text(posX)
+      $("#Y").text(posY)
 
       var sendpos = { id: $('#shipid').val(), posX: lastpos.left, posZ: lastpos.top, targetX: posX, targetZ: posY, time: 0};
       socket.emit('channelname', sendpos);
       //$('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
 
     });
+
+
     socket.on('channelname', function(msg){
       var rotation = angle360(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       console.log(rotation);

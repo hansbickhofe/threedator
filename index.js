@@ -22,18 +22,18 @@ app.get('/',function(req,res){
 
 // kisten array
 var munition = [];
-// grÃ¶ÃŸe des spielfelds
+// größe des spielfelds
 var xmin = -15;
 var xmax = 15;
 var zmin = -21;
 var zmax = 21;
 // max anzahl kisten
 var maxcount = 3;
+// blockieren der munitionskisten
 var muniblock = [];
 muniblock[333] = 0;
 muniblock[666] = 0;
 muniblock[999] = 0;
-
 var muniID=0;
 
 function getpos(box) {
@@ -104,66 +104,47 @@ io.on('connection', function(socket){
   //got hit
   socket.on('gothit', function(msg){
     if(msg){
-      console.log('gothit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
-      io.emit('gothit',msg);
+
+      var post_data = querystring.stringify({
+  			'playerID' : msg.id,
+  			'enemyID': msg.enemyID
+  			});
+      // optionen für player score Appengine Backend Requests
+      var score_post_options = {
+        host: 'threedator.appspot.com',
+        port: '443',
+        path: '/user.score',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(post_data)
+        }
+      };
+      var serverReply;
+      var post_req = https.request(score_post_options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+          var jsonResponse = JSON.parse(chunk);
+            if (jsonResponse[0].logonack) {
+              logonstatus = jsonResponse[0].logonack;
+              serverReply = "logonack";
+            }
+          io.emit(emitMsg, JSON.stringify(logonstatus));
+        });
+      });
+    }
+    console.log('gothit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+    io.emit('gothit',msg);
   });
 
   socket.on('fire', function(msg){
     if(msg){
-      console.log('fire: (' + msg.id + "," + msg.tid + "," + msg.time +")");
+      console.log('fire: (' + msg.id + "," + msg.posX + "," + "," + msg.posY +
+      "," + "," + msg.angle + "," + msg.time +")");
       io.emit('fire',msg);
     }
-
-
-
-  //logon from user (failed for testing)
-  // socket.on('logon', function(msg){
-  //   if(msg){
-  //
-	// 		var post_data = querystring.stringify({
-	// 			'playername' : msg.login,
-	// 			'password': msg.password
-	// 			});
-  //
-  //
-	// 		var post_options = {
-	//       host: 'threedator.appspot.com',
-	//       port: '443',
-	//       path: '/admin.checklogin',
-	//       method: 'POST',
-	//       headers: {
-	//           'Content-Type': 'application/x-www-form-urlencoded',
-	//           'Content-Length': Buffer.byteLength(post_data)
-	//       }
-  // 		};
-  //     var emitMsg;
-  //     var logonstatus;
-  //     var post_req = https.request(post_options, function(res) {
-  //
-  //
-  //     res.setEncoding('utf8');
-  //     res.on('data', function (chunk) {
-  //     var jsonResponse = JSON.parse(chunk);
-  //       if (jsonResponse[0].logonack) {
-  //         logonstatus = jsonResponse[0].logonack;
-  //         emitMsg = "logonack";
-  //       }
-  //       else if (jsonResponse[0].logonnack) {
-  //         logonstatus = jsonResponse[0].logonnack;
-  //         emitMsg = "logonnack";
-  //       }
-  //         console.log(emitMsg + ': ' + JSON.stringify(logonstatus));
-  //         io.emit(emitMsg, JSON.stringify(logonstatus));
-	//       });
-	//   	});
-	// 		// post the data
-	// 	  post_req.write(post_data);
-	// 	  post_req.end();
-  //
-  //   }
-  // });
+  });
 });
-
 http.listen(PORT,function(){
         console.log('listening on *:'+ PORT);
 });
