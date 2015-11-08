@@ -69,7 +69,7 @@ public class TDSocketIO : MonoBehaviour
 			//get current target course
 			targetX = TargetScript.targetX;
 			targetZ = TargetScript.targetZ;
-			SendJsonData();
+			SendPlayerJsonData();
 			timer = 0;
 		}
 	}
@@ -78,14 +78,15 @@ public class TDSocketIO : MonoBehaviour
 	public void CreateMunition(){
 		for (int i=0; i<muniAmmount; i++){
 			GameObject newMuni = Instantiate(Muni, Vector3.zero, Quaternion.identity) as GameObject;
+			newMuni.GetComponent<Munition>().ID = (i+1)*333; //ID setzen
 			newMuni.SetActive(false);
 			MuniArray[i] = newMuni; // push to array
 			newMuni.transform.parent = GameObject.Find("Munition").transform; //make child of empty game object
 		}
 	}
 
-	// send data
-	public void SendJsonData(){
+	// send player data
+	public void SendPlayerJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
 		json.Add("id",PlayerScript.id);
 		json.Add("posX",posX.ToString());
@@ -93,8 +94,18 @@ public class TDSocketIO : MonoBehaviour
 		json.Add("targetX",targetX.ToString());
 		json.Add("targetZ",targetZ.ToString());
 		json.Add("time",shipTime.ToString());
-
 		socket.Emit("channelname",new JSONObject(json));
+	}
+
+	// send pickup data
+	public void SendPickupJsonData(int muniID){
+		Dictionary<string,string> json = new Dictionary<string, string>();
+		json.Add("p_id",PlayerScript.id);
+		json.Add("k_id",muniID.ToString()); //kisten id
+		socket.Emit("gotit",new JSONObject(json));
+
+		print ("hit!"+muniID.ToString());
+		PlayerScript.score++;
 	}
 
 
@@ -131,14 +142,6 @@ public class TDSocketIO : MonoBehaviour
 		// show muni & set position
 		MuniArray[arrayPos].SetActive (true);
 		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
-	}
-
-	public void SendMuniHit(){
-		//Send hit to server
-		// wait for return
-		//score player
-		print ("hit!");
-		PlayerScript.score ++;
 	}
 
 	// process
@@ -231,13 +234,4 @@ public class TDSocketIO : MonoBehaviour
 			}
 		}
 	}
-
-
-	// hex to rgb converter
-//	Color HexToColor(string hex){
-//		byte r = byte.Parse(hex.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
-//		byte g = byte.Parse(hex.Substring(2,2), System.Globalization.NumberStyles.HexNumber);
-//		byte b = byte.Parse(hex.Substring(4,2), System.Globalization.NumberStyles.HexNumber);
-//		return new Color32(r,g,b, 255);
-//	}
 }

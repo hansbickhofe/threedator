@@ -9,6 +9,7 @@ public class Munition : MonoBehaviour {
 
 	public float rotSpeed;
 	Vector3 spawnPosition;
+	public int ID;
 
 	// Use this for initialization
 	void Start () {
@@ -23,10 +24,7 @@ public class Munition : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Player"){ // Player ist immer nur der eigene player
-			//call server for new position
-			//spawnPosition = new Vector3(Random.Range(-GameScript.gameWidth,GameScript.gameWidth),.5f,Random.Range(-GameScript.gameHeight,GameScript.gameHeight));
-			//transform.position = spawnPosition;
-			SocketScript.SendMuniHit();
+			SocketScript.SendPickupJsonData(ID); //send pickup with muni ID
 			gameObject.SetActive(false);
 		}
 	}
