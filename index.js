@@ -52,9 +52,9 @@ setInterval(emitMunipositions, 4000);
 function emitMunipositions() {
 
 //  emit muni positions
-  io.emit('muni', munition[333]);
-  io.emit('muni', munition[666]);
-  io.emit('muni', munition[999]);
+  if ( muniblock[333] == 0 ) io.emit('muni', munition[333]);
+  if ( muniblock[666] == 0 ) io.emit('muni', munition[666]);
+  if ( muniblock[999] == 0 ) io.emit('muni', munition[999]);
 }
 
 function blockMuni(muniID,playerID) {
