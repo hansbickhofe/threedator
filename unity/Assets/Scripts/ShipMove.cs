@@ -18,6 +18,12 @@ public class ShipMove : MonoBehaviour {
 	}
 
 	void Update () {
+		//broadcast own position if ship is "player"
+		if (gameObject.tag == "Player") {
+			PlayerScript.position = transform.position;
+			//print ("pos: "+transform.position);
+		}
+
 		//move
 		stepMove = PlayerScript.speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards (transform.position, new Vector3 (targetX, 0, targetZ), stepMove);
