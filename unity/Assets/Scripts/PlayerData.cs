@@ -9,14 +9,17 @@ public class PlayerData : MonoBehaviour {
 	public int score;
 	public int shots;
 
+	// debug
+	public string clickText;
+	public string touchText;
+	public string hitPos;
+
 	public string id;
 	public string playername;
 	public string team;
 
 	public Camera DefaultCam;
-	public Camera Cam0;
-	public Camera Cam1;
-	public Camera Cam2;
+	public Camera[] Cameras = new Camera[3];
 
 	// Use this for initialization
 	void Start () {
@@ -24,21 +27,16 @@ public class PlayerData : MonoBehaviour {
 		playername = PlayerPrefs.GetString("PLAYER");
 		team = PlayerPrefs.GetString("TEAM");
 
-		if (team == "red") {
-			DefaultCam.enabled = false;
-			Cam0.enabled = true;
-			Cam1.enabled = false;
-			Cam2.enabled = false;
-		} else if (team == "green") {
-			DefaultCam.enabled = false;
-			Cam0.enabled = true;
-			Cam1.enabled = true;
-			Cam2.enabled = false;
-		} else if (team == "blue") {
-			DefaultCam.enabled = false;
-			Cam0.enabled = false;
-			Cam1.enabled = false;
-			Cam2.enabled = true;
+		if (team == "red") SetCam(0);
+		else if (team == "green")SetCam(1);
+		else if (team == "blue")SetCam(2);
+	}
+
+	void SetCam(int camID){
+		DefaultCam.enabled = false;
+		for (int i = 0; i<3; i++){
+			if (i == camID) Cameras[i].enabled = true;
+			else Cameras[i].enabled = false;
 		}
 	}
 	

@@ -18,7 +18,10 @@ public class UI : MonoBehaviour {
 		"ID: "+PlayerScript.id+"\n"+
 		"Score: "+PlayerScript.score+"\n"+
 		"Shots: "+PlayerScript.shots+"\n"+
-		"Team: "+PlayerScript.team+"\n"
+		"Team: "+PlayerScript.team+"\n"+
+		"Click: "+PlayerScript.clickText+"\n"+
+		"Touch: "+PlayerScript.touchText+"\n"+
+		"HitPos: "+PlayerScript.hitPos+"\n"
 		;
 
 		//android back button -> Settings

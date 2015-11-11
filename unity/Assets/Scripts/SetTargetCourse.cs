@@ -3,11 +3,15 @@ using System.Collections;
 
 public class SetTargetCourse : MonoBehaviour {
 
+	//scripts
+	public PlayerData PlayerScript;
+
 	//touch
 	RaycastHit hit;
 	Ray ray;
 
 	//target position
+	public GameObject Waypoint;
 	public float targetX;
 	public float targetZ;
 
@@ -21,8 +25,9 @@ public class SetTargetCourse : MonoBehaviour {
 	void Start () {
 		canTouch = true;
 		time = 0;
+		Waypoint.SetActive(false);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -31,11 +36,19 @@ public class SetTargetCourse : MonoBehaviour {
 		//mouse click
 		if (Input.GetMouseButtonDown(0)){
 			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//debug
+			PlayerScript.clickText = "click";
+		} else {
+			PlayerScript.clickText = "no click";
 		}
 
 		//touch
 		if (Input.touchCount > 0){
 			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+			//debug
+			PlayerScript.touchText = "touched";
+		} else {
+			PlayerScript.touchText = "no touch";
 		}
 		
 		// ray hit test
@@ -43,8 +56,14 @@ public class SetTargetCourse : MonoBehaviour {
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
 				targetX = hit.point.x;
 				targetZ = hit.point.z;
+
+				//set visible waypoint
+				Waypoint.SetActive(true);
+				Waypoint.transform.position = new Vector3(targetX,.1f,targetZ);
+
+				//debug
+				PlayerScript.hitPos = targetX.ToString()+" "+targetZ.ToString();
 			}
 		}
-	
 	}
 }

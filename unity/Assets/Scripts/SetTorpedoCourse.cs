@@ -8,19 +8,20 @@ public class SetTorpedoCourse : MonoBehaviour {
 	Ray ray;
 
 	//target position
+	public GameObject Targetpoint;
 	public float targetX;
 	public float targetZ;
 
 	//new course every three seconds 
-	bool canTouch; 
-	public float waitTime; // 3.0f
+	bool canShoot;
 	float time;
 
 
 	// Use this for initialization
 	void Start () {
-		canTouch = true;
+		canShoot = true;
 		time = 0;
+		Targetpoint.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -43,6 +44,10 @@ public class SetTorpedoCourse : MonoBehaviour {
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
 				targetX = hit.point.x;
 				targetZ = hit.point.z;
+
+				//set visible waypoint
+				Targetpoint.SetActive(true);
+				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
 			}
 		}
 	

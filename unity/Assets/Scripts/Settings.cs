@@ -63,6 +63,8 @@ public class Settings : MonoBehaviour {
 
 		if (PlayerPrefs.HasKey("TEAM")) {
 			ButtonTeamText.text = PlayerPrefs.GetString("TEAM");
+		} else {
+			ButtonTeamText.text = "red"; // default
 		}
 
 		if (ButtonTeamText.text == "red") ButtonTeamColor.color = Color.red;
@@ -153,7 +155,8 @@ public class Settings : MonoBehaviour {
 		// clear input fields
 		InputName.text = "";
 		InputPW.text = "";
-		ButtonTeamText.text = "";
+		ButtonTeamText.text = "green"; //auto toggle to next color "red"
+		SetTeam();
 		//InputRoomID.text = "";
 		
 		// delete player prefs

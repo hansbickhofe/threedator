@@ -37,4 +37,14 @@ public class ShipMove : MonoBehaviour {
 		//freeze x and z rotation
 		transform.eulerAngles = new Vector3(0f,transform.eulerAngles.y,0f);
 	}
+
+	void OnTriggerEnter(Collider other) {
+		if (other.tag == "Waypoint"){
+			other.gameObject.SetActive(false);
+		}
+
+		if (other.tag == "Targetpoint"){
+			other.gameObject.SetActive(false);
+		}
+	}
 }

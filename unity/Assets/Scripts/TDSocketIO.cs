@@ -175,7 +175,7 @@ public class TDSocketIO : MonoBehaviour
 		if (!idFound){
 			//ship an random pos mit random color erzeugen
 			GameObject newShip;
-			Vector3 spawnPosition = new Vector3(r_posX,2,r_posZ);
+			Vector3 spawnPosition = new Vector3(r_posX,4,r_posZ);
 			newShip = Instantiate(ship, spawnPosition, transform.rotation) as GameObject;
 			print("hello"+arraySize);
 
