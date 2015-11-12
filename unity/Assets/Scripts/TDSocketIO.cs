@@ -58,6 +58,7 @@ public class TDSocketIO : MonoBehaviour
 		socket = go.GetComponent<SocketIOComponent>();
 		socket.On ("channelname",receiveSocketData);
 		socket.On ("muni",receiveSocketData);
+		socket.On ("test",receiveTestData);
 		CreateMunition();
 	}
 
@@ -108,6 +109,24 @@ public class TDSocketIO : MonoBehaviour
 		PlayerScript.score++;
 	}
 
+	// send test data
+	public void Test(string testtext){
+		Dictionary<string,string> json = new Dictionary<string, string>();
+		json.Add("testbla",testtext); // geht raus -> -> -> -> -> -> -> -> 
+		socket.Emit("test",new JSONObject(json));
+	}
+
+	// receive test data
+	public void receiveTestData(SocketIOEvent e){
+		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+		JSONObject jo = e.data as JSONObject;
+		
+		// ID's filtern
+		print ("testbllllaaa: "+ jo ["testbla"].str); // geht rein <- <- <- <- <- <- <- <- <- <- 
+
+	}
+
+
 
 	// receive data
 	public void receiveSocketData(SocketIOEvent e){
@@ -139,7 +158,7 @@ public class TDSocketIO : MonoBehaviour
 	void ProcessMuniData(){
 		//translate muni id (z.b.333,666,999) to array position -> return 0,1,2
 		int arrayPos = (int.Parse (m_id) / 333) - 1;
-		// show muni & set position
+		//show muni & set position
 		MuniArray[arrayPos].SetActive (true);
 		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
 	}

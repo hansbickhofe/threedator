@@ -3,6 +3,9 @@ using System.Collections;
 
 public class SetTorpedoCourse : MonoBehaviour {
 
+	//scipts
+	public TDSocketIO SocketScript; 
+
 	//touch
 	RaycastHit hit;
 	Ray ray;
@@ -13,6 +16,7 @@ public class SetTorpedoCourse : MonoBehaviour {
 	public float targetZ;
 
 	//new course every three seconds 
+
 	bool canShoot;
 	float time;
 
@@ -48,6 +52,9 @@ public class SetTorpedoCourse : MonoBehaviour {
 				//set visible waypoint
 				Targetpoint.SetActive(true);
 				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
+
+				//send test data
+				SocketScript.Test("hello world");
 			}
 		}
 	

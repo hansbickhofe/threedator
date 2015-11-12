@@ -6,6 +6,7 @@ public class PlayerData : MonoBehaviour {
 	public Vector3 position;
 	public float speed;
 	public float rotationSpeed;
+	public float torpedoSpeed;
 	public int score;
 	public int shots;
 
