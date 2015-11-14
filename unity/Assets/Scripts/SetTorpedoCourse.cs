@@ -54,7 +54,9 @@ public class SetTorpedoCourse : MonoBehaviour {
 				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
 
 				//send test data
-				SocketScript.Test("hello world");
+				//SocketScript.Test("hello world");
+				SocketScript.SetTorpedoTarget(Targetpoint.transform.position);
+
 			}
 		}
 	

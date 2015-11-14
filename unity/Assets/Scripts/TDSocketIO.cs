@@ -15,14 +15,6 @@ public class TDSocketIO : MonoBehaviour
 	public PlayerData PlayerScript;
 	public SetTargetCourse TargetScript;
 
-	// process data
-	public List<Ship> allShips = new List<Ship>();
-	int arraySize;
-	public int lifeTime;
-	float timer;
-	public float sendDataTime;
-	public int speed;
-
 	// player
 	public GameObject ship;
 	string id;
@@ -32,16 +24,19 @@ public class TDSocketIO : MonoBehaviour
 	float targetZ;
 	int shipTime;
 
+	// torpedo
+	public GameObject torpedo;
+//	string id;
+//	float posX;
+//	float posZ;
+//	float targetX;
+//	float targetZ;
+
 	//muni
 	public GameObject Muni;
 	public int muniAmmount;
 	GameObject[] MuniArray = new GameObject[3]; 
 	Vector3 spawnPosition;
-
-	// received muni data
-	string m_id;
-	float m_posX;
-	float m_posZ;
 
 	// received player data
 	public GameObject r_ship;
@@ -52,13 +47,36 @@ public class TDSocketIO : MonoBehaviour
 	float r_targetZ;
 	int r_shipTime;
 
+	// received torpedo data
+	string t_id;
+	float t_posX;
+	float t_posZ;
+
+	// received muni data
+	string m_id;
+	float m_posX;
+	float m_posZ;
+
+	// process player data
+	public List<Ship> allShips = new List<Ship>();
+	int playerArraySize;
+	public int lifeTime;
+	float timer;
+	public float sendDataTime;
+	public int speed;
+	
+	// process torpedo data
+	public List<Torpedo> allTorpedos = new List<Torpedo>();
+	int torpedoArraySize;
+
+
 	public void Start() {
 		// connect to socketIO
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
 		socket.On ("channelname",receiveSocketData);
 		socket.On ("muni",receiveSocketData);
-		socket.On ("test",receiveTestData);
+		socket.On ("test",receiveTorpedoData);
 		CreateMunition();
 	}
 
@@ -86,6 +104,9 @@ public class TDSocketIO : MonoBehaviour
 		}
 	}
 
+
+	//send receive player & muni data ------------------------------------------------
+
 	// send player data
 	public void SendPlayerJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
@@ -108,24 +129,6 @@ public class TDSocketIO : MonoBehaviour
 		print ("hit!"+muniID.ToString());
 		PlayerScript.score++;
 	}
-
-	// send test data
-	public void Test(string testtext){
-		Dictionary<string,string> json = new Dictionary<string, string>();
-		json.Add("testbla",testtext); // geht raus -> -> -> -> -> -> -> -> 
-		socket.Emit("test",new JSONObject(json));
-	}
-
-	// receive test data
-	public void receiveTestData(SocketIOEvent e){
-		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
-		JSONObject jo = e.data as JSONObject;
-		
-		// ID's filtern
-		print ("testbllllaaa: "+ jo ["testbla"].str); // geht rein <- <- <- <- <- <- <- <- <- <- 
-
-	}
-
 
 
 	// receive data
@@ -155,13 +158,50 @@ public class TDSocketIO : MonoBehaviour
 		}
 	}
 
-	void ProcessMuniData(){
-		//translate muni id (z.b.333,666,999) to array position -> return 0,1,2
-		int arrayPos = (int.Parse (m_id) / 333) - 1;
-		//show muni & set position
-		MuniArray[arrayPos].SetActive (true);
-		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
+
+	//send receive torpedo data ------------------------------------------------
+
+	//send torpedo target data
+	public void SetTorpedoTarget(Vector3 target){
+		Dictionary<string,string> json = new Dictionary<string, string>();
+		json.Add("id",PlayerScript.id);
+		json.Add("posX",target.x.ToString());
+		json.Add("posZ",target.z.ToString()); 
+		socket.Emit("test",new JSONObject(json)); // muss später neu benannt werden
 	}
+
+	// receive torpedo target data
+	public void receiveTorpedoData(SocketIOEvent e){
+		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+		JSONObject jo = e.data as JSONObject;
+
+		t_id = jo["id"].str;
+		t_posX = float.Parse(jo["posX"].str);
+		t_posZ = float.Parse(jo["posZ"].str);
+		print ("torpedo: "+ jo ["id"].str);
+		ProcessTorpedoData();
+	}
+
+	//send receive test data ------------------------------------------------
+
+	//	// send test data
+	//	public void Test(string testtext){
+	//		Dictionary<string,string> json = new Dictionary<string, string>();
+	//		json.Add("testbla",testtext); // geht raus -> -> -> -> -> -> -> -> 
+	//		socket.Emit("test",new JSONObject(json));
+	//	}
+	//
+	//	// receive test data
+	//	public void receiveTestData(SocketIOEvent e){
+	//		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+	//		JSONObject jo = e.data as JSONObject;
+	//		
+	//		// ID's filtern
+	//		print ("testbllllaaa: "+ jo ["testbla"].str); // geht rein <- <- <- <- <- <- <- <- <- <- 
+	//	}
+
+
+	// process all collected data ----------------------------------------------------------
 
 	// process
 	void ProcessPlayerData(){
@@ -169,9 +209,9 @@ public class TDSocketIO : MonoBehaviour
 		bool idFound = false;
 
 		// check if id already exists
-		arraySize = allShips.Count;
+		playerArraySize = allShips.Count;
 
-		for (int i = 0; i<arraySize; i++){
+		for (int i = 0; i<playerArraySize; i++){
 			//print("hello"+arraySize);
 
 			if (allShips[i].id == r_id) {
@@ -196,7 +236,7 @@ public class TDSocketIO : MonoBehaviour
 			GameObject newShip;
 			Vector3 spawnPosition = new Vector3(r_posX,4,r_posZ);
 			newShip = Instantiate(ship, spawnPosition, transform.rotation) as GameObject;
-			print("hello"+arraySize);
+			print("hello"+playerArraySize);
 
 			//color
 			Color playerColor;
@@ -233,15 +273,15 @@ public class TDSocketIO : MonoBehaviour
 			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
 			allShips.Add(new Ship(newShip, r_id, r_shipTime));
 			print (r_id+": added!");
-			arraySize++;
+			playerArraySize++;
 		}
 	}
 
 	// look for unused player objects after shiptime (sec.)
 	void CleanupPlayerData(){
-		arraySize = allShips.Count;
+		playerArraySize = allShips.Count;
 
-		for (int i = 0; i<arraySize; i++){
+		for (int i = 0; i<playerArraySize; i++){
 			if (allShips[i].time > lifeTime) {
 				//ship object und array eintrag löschen
 				Destroy(allShips[i].ship);
@@ -251,6 +291,62 @@ public class TDSocketIO : MonoBehaviour
 			} else {
 				allShips[i].time++;
 			}
+		}
+	}
+
+
+	void ProcessMuniData(){
+		//translate muni id (z.b.333,666,999) to array position -> return 0,1,2
+		int arrayPos = (int.Parse (m_id) / 333) - 1;
+		//show muni & set position
+		MuniArray[arrayPos].SetActive (true);
+		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
+	}
+
+
+	void ProcessTorpedoData(){
+		bool idFound = false;
+		
+		// check if id already exists
+		torpedoArraySize = allTorpedos.Count;
+		
+		for (int i = 0; i<torpedoArraySize; i++){
+			//print("hello"+arraySize);
+			
+			if (allTorpedos[i].id == t_id) {
+				//existing ship pos updaten
+				
+				TorpedoMove TorpedoScript = allTorpedos[i].torpedo.GetComponent<TorpedoMove>();
+				TorpedoScript.posX = t_posX;
+				TorpedoScript.posZ = t_posX;
+				//TorpedoScript.targetX = t_targetX;
+				//TorpedoScript.targetZ = t_targetZ;
+				
+				//print(id+": is already there!");
+				idFound = true;
+				break;
+			}
+		}
+		
+		// neue id eintragen
+		if (!idFound){
+			//ship an random pos mit random color erzeugen
+			GameObject newTorpedo;
+			Vector3 spawnPosition = new Vector3(t_posX,4,t_posZ);
+			newTorpedo = Instantiate(torpedo, spawnPosition, transform.rotation) as GameObject;
+			print("hello"+torpedoArraySize);
+			
+			if (t_id == PlayerScript.id){ // eigenes torpedo finden
+				newTorpedo.tag = "PlayerTorpedo"; // tag für eigenen Torpedo setzen
+			} else {
+				newTorpedo.tag = "EnemyTorpedo"; // tag für Ememy setzen
+			}
+
+			// neue daten ins array schreiben
+			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
+			allTorpedos.Add(new Torpedo(newTorpedo, t_id));
+			print (t_id+": added!");
+			torpedoArraySize++;
 		}
 	}
 }
