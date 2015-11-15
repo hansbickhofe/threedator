@@ -18,20 +18,15 @@ public class SetTorpedoCourse : MonoBehaviour {
 	//new course every three seconds 
 
 	bool canShoot;
-	float time;
-
 
 	// Use this for initialization
 	void Start () {
 		canShoot = true;
-		time = 0;
-		Targetpoint.SetActive(false);
+		Targetpoint.transform.Find("Marker").gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		//timer
 
 		//mouse click
 		if (Input.GetMouseButtonDown(1)){ // right mouse button
@@ -50,11 +45,10 @@ public class SetTorpedoCourse : MonoBehaviour {
 				targetZ = hit.point.z;
 
 				//set visible waypoint
-				Targetpoint.SetActive(true);
+				Targetpoint.transform.Find("Marker").gameObject.SetActive(true);
 				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
 
-				//send test data
-				//SocketScript.Test("hello world");
+				//create initial torpedo target
 				SocketScript.SetTorpedoTarget(Targetpoint.transform.position);
 
 			}

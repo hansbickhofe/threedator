@@ -25,7 +25,7 @@ public class SetTargetCourse : MonoBehaviour {
 	void Start () {
 		canTouch = true;
 		time = 0;
-		Waypoint.SetActive(false);
+		Waypoint.transform.Find("Marker").gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -58,7 +58,7 @@ public class SetTargetCourse : MonoBehaviour {
 				targetZ = hit.point.z;
 
 				//set visible waypoint
-				Waypoint.SetActive(true);
+				Waypoint.transform.Find("Marker").gameObject.SetActive(true);
 				Waypoint.transform.position = new Vector3(targetX,.1f,targetZ);
 
 				//debug

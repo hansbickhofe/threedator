@@ -19,6 +19,7 @@ public class ShipMove : MonoBehaviour {
 
 	void Update () {
 		//broadcast own position if ship is "player"
+
 		if (gameObject.tag == "Player") {
 			PlayerScript.position = transform.position;
 			//print ("pos: "+transform.position);
@@ -39,12 +40,8 @@ public class ShipMove : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Waypoint"){
-			other.gameObject.SetActive(false);
-		}
-
-		if (other.tag == "Targetpoint"){
-			other.gameObject.SetActive(false);
+		if (other.tag == "Waypoint") {
+			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
 		}
 	}
 }

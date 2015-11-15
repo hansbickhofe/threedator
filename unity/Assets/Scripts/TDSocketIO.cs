@@ -14,6 +14,7 @@ public class TDSocketIO : MonoBehaviour
 	public Game GameScript;
 	public PlayerData PlayerScript;
 	public SetTargetCourse TargetScript;
+	public SetTorpedoCourse TorpedoScript;
 
 	// player
 	public GameObject ship;
@@ -51,6 +52,8 @@ public class TDSocketIO : MonoBehaviour
 	string t_id;
 	float t_posX;
 	float t_posZ;
+	float t_targetX;
+	float t_targetZ;
 
 	// received muni data
 	string m_id;
@@ -89,6 +92,7 @@ public class TDSocketIO : MonoBehaviour
 			targetX = TargetScript.targetX;
 			targetZ = TargetScript.targetZ;
 			SendPlayerJsonData();
+			print ("send");
 			timer = 0;
 		}
 	}
@@ -133,7 +137,7 @@ public class TDSocketIO : MonoBehaviour
 
 	// receive data
 	public void receiveSocketData(SocketIOEvent e){
-		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+		//Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
 		JSONObject jo = e.data as JSONObject;
 
 		// ID's filtern
@@ -142,7 +146,7 @@ public class TDSocketIO : MonoBehaviour
 			m_id = jo["id"].str;
 			m_posX = float.Parse(jo["posX"].str);
 			m_posZ = float.Parse(jo["posZ"].str);
-			print("id "+jo["id"].str);
+			//print("id "+jo["id"].str);
 			ProcessMuniData();
 		} else {
 			//andere spieler
@@ -165,8 +169,10 @@ public class TDSocketIO : MonoBehaviour
 	public void SetTorpedoTarget(Vector3 target){
 		Dictionary<string,string> json = new Dictionary<string, string>();
 		json.Add("id",PlayerScript.id);
-		json.Add("posX",target.x.ToString());
-		json.Add("posZ",target.z.ToString()); 
+		json.Add("posX",PlayerScript.position.x.ToString());
+		json.Add("posZ",PlayerScript.position.z.ToString());
+		json.Add("targetX",target.x.ToString());
+		json.Add("targetZ",target.z.ToString()); 
 		socket.Emit("test",new JSONObject(json)); // muss später neu benannt werden
 	}
 
@@ -178,7 +184,9 @@ public class TDSocketIO : MonoBehaviour
 		t_id = jo["id"].str;
 		t_posX = float.Parse(jo["posX"].str);
 		t_posZ = float.Parse(jo["posZ"].str);
-		print ("torpedo: "+ jo ["id"].str);
+		t_targetX = float.Parse(jo["targetX"].str);
+		t_targetZ = float.Parse(jo["targetZ"].str); 
+
 		ProcessTorpedoData();
 	}
 
@@ -218,6 +226,7 @@ public class TDSocketIO : MonoBehaviour
 				//existing ship pos updaten
 
 				ShipMove ShipScript = allShips[i].ship.GetComponent<ShipMove>();
+				// evtl später daten ins array schreiben. k.a. was schneller ist
 				ShipScript.posX = r_posX;
 				ShipScript.posZ = r_posX;
 				ShipScript.targetX = r_targetX;
@@ -272,8 +281,9 @@ public class TDSocketIO : MonoBehaviour
 			// neue daten ins array schreiben
 			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
 			allShips.Add(new Ship(newShip, r_id, r_shipTime));
-			print (r_id+": added!");
+			print (r_id+": ship added!");
 			playerArraySize++;
+			ProcessPlayerData(); // prozess neu triggern um neuen id mit einzubeziehen
 		}
 	}
 
@@ -311,16 +321,19 @@ public class TDSocketIO : MonoBehaviour
 		torpedoArraySize = allTorpedos.Count;
 		
 		for (int i = 0; i<torpedoArraySize; i++){
-			//print("hello"+arraySize);
+			print("torp"+torpedoArraySize);
 			
 			if (allTorpedos[i].id == t_id) {
-				//existing ship pos updaten
+				print("t_id: "+t_posX);
+				//existing torpedo pos updaten -> aus ship move script!!
 				
 				TorpedoMove TorpedoScript = allTorpedos[i].torpedo.GetComponent<TorpedoMove>();
+				// evtl später daten ins array schreiben. k.a. was schneller ist
+				TorpedoScript.id = t_id;
 				TorpedoScript.posX = t_posX;
-				TorpedoScript.posZ = t_posX;
-				//TorpedoScript.targetX = t_targetX;
-				//TorpedoScript.targetZ = t_targetZ;
+				TorpedoScript.posZ = t_posZ;
+				TorpedoScript.targetX = t_targetX;
+				TorpedoScript.targetZ = t_targetZ;
 				
 				//print(id+": is already there!");
 				idFound = true;
@@ -330,23 +343,17 @@ public class TDSocketIO : MonoBehaviour
 		
 		// neue id eintragen
 		if (!idFound){
-			//ship an random pos mit random color erzeugen
 			GameObject newTorpedo;
-			Vector3 spawnPosition = new Vector3(t_posX,4,t_posZ);
+			Vector3 spawnPosition = new Vector3(posX,4,posZ); // torpedo an aktueller ship position erzeugen
 			newTorpedo = Instantiate(torpedo, spawnPosition, transform.rotation) as GameObject;
-			print("hello"+torpedoArraySize);
-			
-			if (t_id == PlayerScript.id){ // eigenes torpedo finden
-				newTorpedo.tag = "PlayerTorpedo"; // tag für eigenen Torpedo setzen
-			} else {
-				newTorpedo.tag = "EnemyTorpedo"; // tag für Ememy setzen
-			}
+			print (t_id+": torp added!");
 
 			// neue daten ins array schreiben
-			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
 			allTorpedos.Add(new Torpedo(newTorpedo, t_id));
-			print (t_id+": added!");
+
 			torpedoArraySize++;
+			ProcessTorpedoData(); // prozess sofort restarten um neue id mit einzubeziehen
+			print ("size: "+torpedoArraySize);
 		}
 	}
 }
