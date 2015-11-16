@@ -7,7 +7,8 @@ public class PlayerData : MonoBehaviour {
 	public float speed;
 	public float rotationSpeed;
 	public int score;
-	public int shots;
+	public int muni;
+	public bool canShoot;
 
 	// debug
 	public string clickText;

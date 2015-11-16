@@ -5,8 +5,6 @@ public class ShipMove : MonoBehaviour {
 
 	public PlayerData PlayerScript;
 
-	[HideInInspector] public float posX;
-	[HideInInspector] public float posZ;
 	[HideInInspector] public float targetX;
 	[HideInInspector] public float targetZ;
 	
@@ -14,10 +12,11 @@ public class ShipMove : MonoBehaviour {
 
 	void Start(){
 		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
-		transform.position = new Vector3 (posX, 0, posZ);
+		transform.position = PlayerScript.position; //new Vector3 (posX, 0, posZ);
 	}
 
 	void Update () {
+
 		//broadcast own position if ship is "player"
 
 		if (gameObject.tag == "Player") {

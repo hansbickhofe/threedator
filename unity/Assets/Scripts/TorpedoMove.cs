@@ -6,34 +6,31 @@ public class TorpedoMove : MonoBehaviour {
 	//scripts
 	public PlayerData PlayerScript;
 
+	public GameObject TorpedoObject;
+
 	public float speed;
 	public float rotationSpeed;
 
 	public string id;
-	public float posX;
-	public float posZ;
-	public float targetX;
-	public float targetZ;
-
-//	[HideInInspector] public float posX;
-//	[HideInInspector] public float posZ;
-//	[HideInInspector] public float targetX;
-//	[HideInInspector] public float targetZ;
+	[HideInInspector] public float posX;
+	[HideInInspector] public float posZ;
+	[HideInInspector] public float targetX;
+	[HideInInspector] public float targetZ;
 	
 	float stepMove;
 
 	void Start(){
 		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
-		transform.position = new Vector3 (posX, 0, posZ);
+	}
+
+	public void SetStartPosition(){
+		TorpedoObject.SetActive(true);
+		transform.position = new Vector3(posX,0.25f,posZ);
 	}
 
 	void Update () {
-		print("move");
-
-		if (gameObject.activeSelf == true) {
-			// eigene position aktualisieren um sie später am server zu updaten
-			posX = transform.position.x;
-			posZ = transform.position.z;
+		if (TorpedoObject.activeSelf == true) {
+			// torpedo position aktualisieren um sie später am server zu updaten
 		}
 
 		//move
@@ -58,11 +55,16 @@ public class TorpedoMove : MonoBehaviour {
 
 		if (other.tag == "Targetpoint"){
 			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
-			gameObject.SetActive(false);
+			TorpedoObject.SetActive(false);
+			WaterHit();
 		}
 	}
 
 	void ShipHit(){
+		PlayerScript.canShoot = true;
+	}
 
+	void WaterHit(){
+		PlayerScript.canShoot = true;
 	}
 }

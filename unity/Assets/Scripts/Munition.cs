@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Munition : MonoBehaviour {
 
-	public TDSocketIO SocketScript; 
+	public TDSocketIO SocketScript;
 	public Game GameScript;
+	public PlayerData PlayerScript;
 
 
 	public float rotSpeed;
@@ -15,6 +16,7 @@ public class Munition : MonoBehaviour {
 	void Start () {
 		SocketScript = GameObject.Find("_Main").GetComponent<TDSocketIO>();
 		GameScript = GameObject.Find("_Main").GetComponent<Game>();
+		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
 	}
 	
 	// Update is called once per frame
@@ -23,9 +25,11 @@ public class Munition : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if (other.tag == "Player"){ // Player ist immer nur der eigene player
+		if (other.tag == "Player" && PlayerScript.muni < 3){ // Player ist immer nur der eigene player
 			SocketScript.SendPickupJsonData(ID); //send pickup with muni ID
 			gameObject.SetActive(false);
+
+			PlayerScript.muni++; // erst on receive adden hier nur test
 		}
 	}
 }

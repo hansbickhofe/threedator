@@ -17,7 +17,7 @@ public class UI : MonoBehaviour {
 		"Name: "+PlayerScript.playername+"\n"+
 		"ID: "+PlayerScript.id+"\n"+
 		"Score: "+PlayerScript.score+"\n"+
-		"Shots: "+PlayerScript.shots+"\n"+
+		"Muni: "+PlayerScript.muni+"\n"+
 		"Team: "+PlayerScript.team+"\n"+
 		"Click: "+PlayerScript.clickText+"\n"+
 		"Touch: "+PlayerScript.touchText+"\n"+
