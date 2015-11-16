@@ -88,6 +88,34 @@ io.on('connection', function(socket){
     }
     io.emit('test',msg);
   });
+// test keyword unity
+  socket.on('test1', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('test1',msg);
+  });
+// test keyword unity
+  socket.on('test2', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('test2',msg);
+  });
+// test keyword unity
+  socket.on('test3', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('test3',msg);
+  });
+// torpedo keyword unity
+  socket.on('torpedo', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('torpedo',msg);
+  });
 
 // pick up munition
   socket.on('gotit', function(msg) {
