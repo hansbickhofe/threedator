@@ -13,7 +13,7 @@ public class PlayPause : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetKey("space")){
+		if (Input.GetKey("up")){
 			myAnimator.SetBool("isMoving", true);
 		} else {
 			myAnimator.SetBool("isMoving", false);
