@@ -112,7 +112,7 @@ io.on('connection', function(socket){
 // torpedo keyword unity
   socket.on('torpedo', function(msg){
     if(msg){
-      // console.log(msg);
+      console.log(msg);
     }
     io.emit('torpedo',msg);
   });

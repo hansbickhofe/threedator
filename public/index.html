@@ -4,10 +4,10 @@
   <head>
     <title>threedator</title>
     <style>
-      #A { width:600px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
+      #A { width:600px;height:720px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #B { width:103px;height:800px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #C { width:180px;height:750px;cursor:pointer;background:#2f2f2f;position:absolute;top:60px;color:#fff;font:bold 10px Arial; }
-      #D { width:600px;height:80px;cursor:pointer;background:#afafaf;position:absolute;top:730px;color:#000;font:bold 15px Arial; }
+      #D { width:600px;height:80px;cursor:pointer;background:#afafaf;position:absolute;top:830px;color:#000;font:bold 15px Arial; }
       #X { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #Y { width:80px;height:20px;cursor:pointer;background:#2f2f2f;position:absolute;top:10px;color:#fff;font:bold 15px Arial; }
       #myimg { position: absolute; z-index: 1000; border-spacing: 0;}
@@ -124,7 +124,13 @@
       $("#X").text(posX)
       $("#Y").text(posY)
 
-      var sendpos = { id: $('#shipid').val(), posX: lastpos.left, posZ: lastpos.top, targetX: posX, targetZ: posY, time: 0};
+      var sendpos = {
+        id: $('#shipid').val(),
+        posX: ((lastpos.left-335)*0,0447),
+        posZ: ((lastpos.top-345)*0,0608),
+        targetX: ((posX-335)*0,0447),
+        targetZ: ((posY-345)*0,0608),
+        time: 0};
       socket.emit('channelname', sendpos);
       //$('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
 
@@ -145,7 +151,7 @@
         duration:'slow'
       },'linear');
 
-      $('.follow').animate({'top': msg.targetZ - 20, 'left': msg.targetX - 20},1500);
+      $('.follow').animate({'top': ((msg.targetZ/0,0608)+345) - 20, 'left': ((msg.targetX/0,0447)+335) - 20},1500);
 
       syncInputVal(msg);
     });
