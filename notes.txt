@@ -24,3 +24,24 @@ A: Shell fired: emit PlayerID/source-, target Vector -> N:
 N: on PlayerID/source-, target Vector - Broadcast PlayerID/source-, target Vector -> All A:
 A: on on PlayerID/source-, target Vector - recv. render Objects
 A: Shell collision: emit PlayerID/Attacker PlayerID-> N:
+
+
+##################Test Webinterface Notes
+670 x 730
+0,0 = 335,345
+
+x:-15 = 0
+x:+15 = 670
+z:-21 = 0
+z:21 = 730
+
+x:15/335 = 0,0447
+z:21/445 = 0,0608
+
+Beispiel:
+x: (130-335)*0,0447 = -9,163
+z: (450-345)*(-0,0608) = -6,384
+
+Nullpunkt:
+x:
+z:
