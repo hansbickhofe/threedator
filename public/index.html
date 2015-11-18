@@ -141,19 +141,20 @@
       var rotation = angle360(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       // console.log(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       $("#C").append(msg);
+      if (msg.id == 1){
+        $('.follow').animate({  borderSpacing: -90 }, {
+          step: function(now,fx) {
+            $('.follow').css('-webkit-transform','rotate('+rotation+')');
+            $('.follow').css('-moz-transform','rotate('+rotation+')');
+            $('.follow').css('transform','rotate('+rotation+')');
+          },
+          duration:'slow'
+        },'linear');
 
-      $('.follow').animate({  borderSpacing: -90 }, {
-        step: function(now,fx) {
-          $('.follow').css('-webkit-transform','rotate('+rotation+')');
-          $('.follow').css('-moz-transform','rotate('+rotation+')');
-          $('.follow').css('transform','rotate('+rotation+')');
-        },
-        duration:'slow'
-      },'linear');
-
-      $('.follow').animate({'top': ((msg.targetZ/-0.0608)+345) - 20, 'left': ((msg.targetX/0.0447)+335) - 20},1500);
-
-      syncInputVal(msg);
+        $('.follow').animate({'top': ((msg.targetZ/-0.0608)+345) - 20, 'left': ((msg.targetX/0.0447)+335) - 20},1500);
+        //
+        syncInputVal(msg);
+      }
     });
 
     socket.on('fire', function(msg){
