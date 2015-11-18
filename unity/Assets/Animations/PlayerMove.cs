@@ -3,13 +3,13 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour {
 	
-	float speed = .5f;
+	public float speed = .5f;
 
 	float xPos;
 	float zPos;
 
 	float dir;
-	float rotSpeed = 5f;
+	public float rotSpeed = 5f;
 
 	// Use this for initialization
 	void Start () {
