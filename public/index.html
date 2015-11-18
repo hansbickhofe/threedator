@@ -126,10 +126,10 @@
 
       var sendpos = {
         id: $('#shipid').val(),
-        posX: ((lastpos.left-335)*0,0447),
-        posZ: ((lastpos.top-345)*0,0608),
-        targetX: ((posX-335)*0,0447),
-        targetZ: ((posY-345)*0,0608),
+        posX: ((lastpos.left - 335)* 0.0447),
+        posZ: ((lastpos.top - 345)* (-0.0608)),
+        targetX: ((posX - 335)* 0.0447),
+        targetZ: ((posY - 345)* (-0.0608)),
         time: 0};
       socket.emit('channelname', sendpos);
       //$('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
@@ -139,7 +139,7 @@
 
     socket.on('channelname', function(msg){
       var rotation = angle360(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
-      console.log(rotation);
+      // console.log(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       $("#C").append(msg);
 
       $('.follow').animate({  borderSpacing: -90 }, {
@@ -151,7 +151,7 @@
         duration:'slow'
       },'linear');
 
-      $('.follow').animate({'top': ((msg.targetZ/0,0608)+345) - 20, 'left': ((msg.targetX/0,0447)+335) - 20},1500);
+      $('.follow').animate({'top': ((msg.targetZ/-0.0608)+345) - 20, 'left': ((msg.targetX/0.0447)+335) - 20},1500);
 
       syncInputVal(msg);
     });
