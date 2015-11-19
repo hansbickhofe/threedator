@@ -81,6 +81,13 @@ io.on('connection', function(socket){
     }
     io.emit('player',msg);
   });
+// head keyword unity
+  socket.on('head', function(msg){
+    if(msg){
+      // console.log(msg);
+    }
+    io.emit('head',msg);
+  });
 // test keyword unity
   socket.on('test', function(msg){
     if(msg){
