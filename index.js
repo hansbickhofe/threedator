@@ -117,6 +117,14 @@ io.on('connection', function(socket){
     io.emit('torpedo',msg);
   });
 
+// water keyword unity
+  socket.on('water', function(msg){
+    if(msg){
+      console.log(msg);
+    }
+    io.emit('water',msg);
+  });
+
 // pick up munition
   socket.on('gotit', function(msg) {
     if(msg) {
