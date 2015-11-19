@@ -133,13 +133,13 @@
         targetX: ((posX - 335)* 0.0447),
         targetZ: ((posY - 345)* (-0.0608)),
         time: 0};
-      socket.emit('channelname', sendpos);
+      socket.emit('player', sendpos);
       //$('.follow').css({'top': e.clientY - 20, 'left': e.clientX - 20});
 
     });
 
 
-    socket.on('channelname', function(msg){
+    socket.on('player', function(msg){
       var rotation = angle360(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       // console.log(msg.posX,msg.posZ,msg.targetX,msg.targetZ);
       $("#C").append(msg);
