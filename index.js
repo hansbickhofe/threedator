@@ -47,14 +47,14 @@ munition[333] = getpos(333);
 munition[666] = getpos(666);
 munition[999] = getpos(999);
 
-setInterval(emitMunipositions, 4000);
+setInterval(emitMunipositions, 3000);
 
 function emitMunipositions() {
 
 //  emit muni positions
-  if ( muniblock[333] == 0 ) io.emit('muni', munition[333]);
-  if ( muniblock[666] == 0 ) io.emit('muni', munition[666]);
-  if ( muniblock[999] == 0 ) io.emit('muni', munition[999]);
+  if ( muniblock[333] == 0 ) io.emit('newmuni', munition[333]);
+  if ( muniblock[666] == 0 ) io.emit('newmuni', munition[666]);
+  if ( muniblock[999] == 0 ) io.emit('newmuni', munition[999]);
 }
 
 function blockMuni(muniID,playerID) {
@@ -68,18 +68,18 @@ function blockMuni(muniID,playerID) {
       // console.log("unblocked " + muniID)
       muniblock[muniID] = 0 ;
       munition[muniID] = getpos(muniID);
-      io.emit('muni', munition[muniID]);
+      io.emit('newmuni', munition[muniID]);
     }, 3000);
 }
 
 io.on('connection', function(socket){
 
   //recv Pos
-  socket.on('channelname', function(msg){
+  socket.on('player', function(msg){
     if(msg){
       // console.log(msg);
     }
-    io.emit('channelname',msg);
+    io.emit('player',msg);
   });
 // test keyword unity
   socket.on('test', function(msg){
@@ -117,8 +117,16 @@ io.on('connection', function(socket){
     io.emit('torpedo',msg);
   });
 
+// water keyword unity
+  socket.on('water', function(msg){
+    if(msg){
+      console.log('water: (' + msg + ')');
+    }
+    io.emit('water',msg);
+  });
+
 // pick up munition
-  socket.on('gotit', function(msg) {
+  socket.on('pickedmuni', function(msg) {
     if(msg) {
       var p_ID = msg.p_id ;
       var k_ID = msg.k_id ;
@@ -126,15 +134,20 @@ io.on('connection', function(socket){
         // console.log("blocking "+ k_ID) ;
         blockMuni(k_ID,p_ID);
       }
+    io.emit('pickedmuni',msg);
     }
   });
 
   //got hit
   socket.on('gothit', function(msg){
     if(msg){
-      var post_data = querystring.stringify({
-  			'playerID' : msg.id,
-  			'enemyID': msg.enemyID
+    	console.log('gothit: (' + msg + ')');
+    	io.emit('gothit',msg);
+
+      /*
+	var post_data = querystring.stringify({
+  			'torpedoID' : msg.torpedID,
+  			'shipID': msg.shipID
   			});
       // optionen für player score Appengine Backend Requests
       var score_post_options = {
@@ -158,16 +171,14 @@ io.on('connection', function(socket){
             }
           io.emit(emitMsg, JSON.stringify(logonstatus));
         });
-      });
+      }); */
     }
-    console.log('gothit: (' + msg.id + "," + msg.tid + "," + msg.time +")");
-    io.emit('gothit',msg);
   });
 
   socket.on('fire', function(msg){
     if(msg){
-      console.log('fire: (' + msg.id + "," + msg.posX + "," + "," + msg.posY +
-      "," + "," + msg.angle + "," + msg.time +")");
+//      console.log('fire: (' + msg.id + "," + msg.posX + "," + "," + msg.posY +
+//      "," + "," + msg.angle + "," + msg.time +")");
       io.emit('fire',msg);
     }
   });
