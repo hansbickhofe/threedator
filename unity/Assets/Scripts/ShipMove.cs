@@ -40,7 +40,7 @@ public class ShipMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Waypoint") {
-			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
+			//other.gameObject.transform.Find("WaypointMarker").gameObject.SetActive(false);
 		}
 	}
 }

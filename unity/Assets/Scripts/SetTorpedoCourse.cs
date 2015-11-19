@@ -22,7 +22,7 @@ public class SetTorpedoCourse : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		PlayerScript.canShoot = true;
-		Targetpoint.transform.Find("Marker").gameObject.SetActive(false);
+		Targetpoint.transform.Find("TorpedoMarker").gameObject.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -50,7 +50,7 @@ public class SetTorpedoCourse : MonoBehaviour {
 				targetZ = hit.point.z;
 
 				//set visible waypoint
-				Targetpoint.transform.Find("Marker").gameObject.SetActive(true);
+				Targetpoint.transform.Find("TorpedoMarker").gameObject.SetActive(true);
 				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
 				
 				//create initial torpedo target

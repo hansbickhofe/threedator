@@ -4,6 +4,7 @@ using System.Collections;
 public class TorpedoMove : MonoBehaviour {
 
 	//scripts
+	public TDSocketIO SocketScript;
 	public PlayerData PlayerScript;
 
 	public GameObject TorpedoObject;
@@ -12,6 +13,7 @@ public class TorpedoMove : MonoBehaviour {
 	public float rotationSpeed;
 
 	public string id;
+	public string torpedoStatus;
 	[HideInInspector] public float posX;
 	[HideInInspector] public float posZ;
 	[HideInInspector] public float targetX;
@@ -21,6 +23,7 @@ public class TorpedoMove : MonoBehaviour {
 
 	void Start(){
 		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
+		SocketScript = GameObject.Find("_Main").GetComponent<TDSocketIO>();
 	}
 
 	public void SetStartPosition(){
@@ -48,23 +51,37 @@ public class TorpedoMove : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		//enemy hit
-		if (other.tag == "Player" && PlayerScript.id != id){ // nur treffer durch fremde torpedo id's auswerten
+		//got hit
+		if (other.tag == "Player" && PlayerScript.id != id){
+			// nur treffer durch fremde torpedo id's auswerten
+			TorpedoObject.SetActive(false);
 			ShipHit();
 		}
 
-		if (other.tag == "Targetpoint"){
-			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
+		if (other.tag == "Emeny" && id == PlayerScript.id){
+			// nur treffer durch fremde torpedo id's auswerten
+			TorpedoObject.SetActive(false);
+		}
+
+		if (other.tag == "Targetpoint"){ 
+			other.gameObject.transform.Find("TorpedoMarker").gameObject.SetActive(false);
 			TorpedoObject.SetActive(false);
 			WaterHit();
 		}
 	}
 
 	void ShipHit(){
-		PlayerScript.canShoot = true;
+		SocketScript.SendGotHit(id);
+		//PlayerScript.canShoot = true;
 	}
 
 	void WaterHit(){
+		SocketScript.SendWater(id);
 		PlayerScript.canShoot = true;
 	}
+
+	public void HideTorpedo(){
+		TorpedoObject.SetActive(false);
+	}
+
 }
