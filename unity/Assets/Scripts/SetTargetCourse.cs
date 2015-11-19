@@ -12,6 +12,7 @@ public class SetTargetCourse : MonoBehaviour {
 
 	//target position
 	public GameObject Waypoint;
+	public GameObject FloatMarker;
 	public float targetX;
 	public float targetZ;
 
@@ -19,19 +20,30 @@ public class SetTargetCourse : MonoBehaviour {
 	bool canTouch; 
 	public float waitTime; // 3.0f
 	float time;
-
+	bool newCourse;
 
 	// Use this for initialization
 	void Start () {
 		canTouch = true;
-		time = 0;
-		Waypoint.transform.Find("Marker").gameObject.SetActive(false);
+		time = 3;
+		Waypoint.transform.Find("WMarker").gameObject.SetActive(false); // real waypoint
 	}
 
 	// Update is called once per frame
 	void Update () {
 
 		//timer
+		newCourse = false;
+		time -= Time.deltaTime;
+		FloatMarker.transform.localScale = new Vector3(time*2f,.1f,time*2f);
+		print ("dddd:"+Waypoint.transform.localScale);
+
+		//SetNewCourse
+		if (time <= 0 && newCourse == false){
+			newCourse = true;
+		}
+
+		ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 		//mouse click
 		if (Input.GetMouseButtonDown(0)){
@@ -53,16 +65,23 @@ public class SetTargetCourse : MonoBehaviour {
 		
 		// ray hit test
 		if (Physics.Raycast(ray, out hit)){
-			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
+			if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
 				targetX = hit.point.x;
 				targetZ = hit.point.z;
+			    newCourse = false;
+			    time = 3;
 
 				//set visible waypoint
-				Waypoint.transform.Find("Marker").gameObject.SetActive(true);
+				Waypoint.transform.Find("WMarker").gameObject.SetActive(true);
 				Waypoint.transform.position = new Vector3(targetX,.1f,targetZ);
+				print (Waypoint.transform.position);
 
 				//debug
 				PlayerScript.hitPos = targetX.ToString()+" "+targetZ.ToString();
+			} else if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == false){
+				//waypointmarker frei bewegen
+				FloatMarker.transform.position = new Vector3(hit.point.x,.1f,hit.point.z);
+			
 			}
 		}
 	}

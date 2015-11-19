@@ -28,8 +28,10 @@ public class Munition : MonoBehaviour {
 		if (other.tag == "Player" && PlayerScript.muni < 3){ // Player ist immer nur der eigene player
 			SocketScript.SendPickupJsonData(ID); //send pickup with muni ID
 			gameObject.SetActive(false);
+		}
 
-			PlayerScript.muni++; // erst on receive adden hier nur test
+		if (other.tag == "Enemy"){ // Player ist immer nur der eigene player
+			gameObject.SetActive(false);
 		}
 	}
 }
