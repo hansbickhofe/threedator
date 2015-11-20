@@ -13,21 +13,74 @@ public class SetTorpedoCourse : MonoBehaviour {
 
 	//target position
 	public GameObject Targetpoint;
+	public GameObject FloatMarker;
 	public float targetX;
 	public float targetZ;
 
 	//new shot when last torpedo is gone
 	bool canShoot;
+	public float waitTime; // 3.0f
+	float time;
+	bool newCourse;
 
 	// Use this for initialization
 	void Start () {
 		PlayerScript.canShoot = true;
-		Targetpoint.transform.Find("TorpedoMarker").gameObject.SetActive(false);
+		time = 3;
+		Targetpoint.transform.Find("Marker").gameObject.SetActive(false); // real torpedo point
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
+		//timer
+		newCourse = false;
+		if (PlayerScript.raycastMode == "torpedo") time -= Time.deltaTime;
+
+		//check mode and scale floating target down
+		if (time >= 0 && PlayerScript.raycastMode == "torpedo") {
+			FloatMarker.SetActive (true);
+			FloatMarker.transform.localScale = new Vector3 (time * 2f, .1f, time * 2f);
+		} else {
+			FloatMarker.SetActive (false);
+		}
+
+		//SetNewTorpedoCourse
+		if (time <= 0 && newCourse == false){
+			PlayerScript.muni--;
+			newCourse = true;
+		}
+		
+
+		// vr mode vs mouse/touch mode
+		if (PlayerScript.VRmode == "on"){
+			if (PlayerScript.raycastMode == "torpedo" && Physics.Raycast (PlayerScript.VRCamHead.transform.position, PlayerScript.VRCamHead.transform.forward, out hit))
+			{
+				if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
+					targetX = hit.point.x;
+					targetZ = hit.point.z;
+					
+					newCourse = false;
+					time = 3;
+					
+					//set visible torpedo target
+					Targetpoint.transform.Find("Marker").gameObject.SetActive(true);
+					Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
+
+					//send to server
+					SocketScript.SetTorpedoTarget(Targetpoint.transform.position);
+
+					// nach feuern raycast mode wieder auf waypoint setzen
+					PlayerScript.raycastMode = "waypoint";
+
+				} else if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == false){
+					//torpedomarker frei bewegen
+					FloatMarker.transform.position = new Vector3(hit.point.x,.1f,hit.point.z);
+				}
+			}
+		} else {
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		}
 
 		//mouse click
 		if (Input.GetMouseButtonDown(1)){ // right mouse button
@@ -50,7 +103,7 @@ public class SetTorpedoCourse : MonoBehaviour {
 				targetZ = hit.point.z;
 
 				//set visible waypoint
-				Targetpoint.transform.Find("TorpedoMarker").gameObject.SetActive(true);
+				Targetpoint.transform.Find("Marker").gameObject.SetActive(true);
 				Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
 				
 				//create initial torpedo target

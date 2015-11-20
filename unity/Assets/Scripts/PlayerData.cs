@@ -12,8 +12,10 @@ public class PlayerData : MonoBehaviour {
 	Vector3 camRot1 =  new Vector3(0,120,0);
 	Vector3 camRot2 =  new Vector3(0,240,0);
 
+	//vr head movement
 	public Vector3 headRotation;
 
+	// player
 	public Vector3 position;
 	public float speed;
 	public float rotationSpeed;
@@ -22,6 +24,7 @@ public class PlayerData : MonoBehaviour {
 	public bool canShoot;
 
 	// debug
+	public GameObject debugCanvas; 
 	public string clickText;
 	public string touchText;
 	public string hitPos;
@@ -30,10 +33,14 @@ public class PlayerData : MonoBehaviour {
 	public string playername;
 	public string team;
 
+	// vr
 	public GameObject VRCam;
 	public GameObject VRCamHead;
 	public GameObject FireCube;
+	public GameObject MuniMsg;
 	public Camera[] Cameras = new Camera[3];
+	public string raycastMode = "waypoint";
+
 
 	// Use this for initialization
 	void Start () {
@@ -43,17 +50,17 @@ public class PlayerData : MonoBehaviour {
 
 		// set cam for vr mode
 		VRmode = PlayerPrefs.GetString("VR");
-		print ("vr: "+VRmode);
 
 		if (VRmode == "") VRmode = "on"; // VR is default
 
-		print ("vr: "+VRmode);
-
 		if (VRmode == "off"){
+			debugCanvas.SetActive(true);
 			if (team == "red") SetCam(0);
 			else if (team == "green")SetCam(1);
 			else if (team == "blue")SetCam(2);
 		} else {
+			//hide debug canvas
+			debugCanvas.SetActive(false);
 			// activate vr cam
 			VRCam.SetActive(true);
 
@@ -80,7 +87,20 @@ public class PlayerData : MonoBehaviour {
 	}
 
 	void Update(){
-		if (muni > 0) FireCube.SetActive(true);
-		else FireCube.SetActive(false);
+		UpdateMuniCube();
+	}
+
+	void UpdateMuniCube(){
+		if (muni == 0) {
+			FireCube.SetActive (false);
+			MuniMsg.SetActive (true);
+			MuniMsg.GetComponent<TextMesh> ().text = "collect\nammo!!!";
+		} else if (muni > 0 && muni < 3) {
+			FireCube.SetActive (true);
+			MuniMsg.SetActive (false);
+		} else if (muni == 3) {
+			MuniMsg.SetActive (true);
+			MuniMsg.GetComponent<TextMesh> ().text = "ammo___\nfull___";
+		}
 	}
 }

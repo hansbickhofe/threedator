@@ -98,7 +98,6 @@ public class TDSocketIO : MonoBehaviour
 			//vr headtracing
 			//SendHeadData(new Vector3(UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360)));
 
-			print ("send");
 			timer = 0;
 		}
 	}

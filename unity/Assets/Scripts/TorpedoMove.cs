@@ -61,10 +61,11 @@ public class TorpedoMove : MonoBehaviour {
 		if (other.tag == "Emeny" && id == PlayerScript.id){
 			// nur treffer durch fremde torpedo id's auswerten
 			TorpedoObject.SetActive(false);
+			PlayerScript.canShoot = true;
 		}
 
 		if (other.tag == "Targetpoint"){ 
-			other.gameObject.transform.Find("TorpedoMarker").gameObject.SetActive(false);
+			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
 			TorpedoObject.SetActive(false);
 			WaterHit();
 		}
@@ -72,7 +73,6 @@ public class TorpedoMove : MonoBehaviour {
 
 	void ShipHit(){
 		SocketScript.SendGotHit(id);
-		//PlayerScript.canShoot = true;
 	}
 
 	void WaterHit(){
