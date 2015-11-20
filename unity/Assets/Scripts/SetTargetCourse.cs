@@ -35,15 +35,42 @@ public class SetTargetCourse : MonoBehaviour {
 		//timer
 		newCourse = false;
 		time -= Time.deltaTime;
-		FloatMarker.transform.localScale = new Vector3(time*2f,.1f,time*2f);
-		print ("dddd:"+Waypoint.transform.localScale);
+		if (time >= 0) FloatMarker.transform.localScale = new Vector3(time*2f,.1f,time*2f);
 
 		//SetNewCourse
 		if (time <= 0 && newCourse == false){
 			newCourse = true;
 		}
 
-		ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+		// vr mode vs mouse/touch mode
+		if (PlayerScript.VRmode == "on"){
+			if (Physics.Raycast (PlayerScript.VRCamHead.transform.position, PlayerScript.VRCamHead.transform.forward, out hit))
+			{
+				if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
+					targetX = hit.point.x;
+					targetZ = hit.point.z;
+					newCourse = false;
+					time = 3;
+					
+					//set visible waypoint
+					Waypoint.transform.Find("WMarker").gameObject.SetActive(true);
+					Waypoint.transform.position = new Vector3(targetX,.1f,targetZ);
+					print (Waypoint.transform.position);
+					
+					//debug
+					PlayerScript.hitPos = targetX.ToString()+" "+targetZ.ToString();
+				} else if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == false){
+					//waypointmarker frei bewegen
+					FloatMarker.transform.position = new Vector3(hit.point.x,.1f,hit.point.z);
+					
+				}
+			}
+		} else {
+			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		}
+
+
 
 		//mouse click
 		if (Input.GetMouseButtonDown(0)){
@@ -63,7 +90,7 @@ public class SetTargetCourse : MonoBehaviour {
 			PlayerScript.touchText = "no touch";
 		}
 		
-		// ray hit test
+		// ray hit test for touch click usw.
 		if (Physics.Raycast(ray, out hit)){
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
 				targetX = hit.point.x;

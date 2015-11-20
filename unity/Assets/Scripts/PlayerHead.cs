@@ -12,6 +12,11 @@ public class PlayerHead : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.LookAt(PlayerScript.position);
+		//if (PlayerData.VRmode == "off"){
+			transform.LookAt(PlayerScript.position);
+	//	} else { 
+			//transform.LookAt(PlayerScript.headRotation);
+			//print ("ddd");
+	//	}
 	}
 }

@@ -27,11 +27,6 @@ public class TDSocketIO : MonoBehaviour
 
 	// torpedo
 	public GameObject torpedo;
-//	string id;
-//	float posX;
-//	float posZ;
-//	float targetX;
-//	float targetZ;
 
 	//muni
 	public GameObject Muni;
@@ -78,6 +73,9 @@ public class TDSocketIO : MonoBehaviour
 		// connect to socketIO
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
+
+		socket.On ("head",receiveHeadData); // VR kopfbewegungen
+
 		socket.On ("player",receiveSocketData);
 		socket.On ("newmuni",receiveNewMuniData); // only receive no send
 		socket.On ("pickedmuni",receivePickedMuniData);
@@ -92,10 +90,14 @@ public class TDSocketIO : MonoBehaviour
 		timer += Time.deltaTime;
 
 		if (timer > sendDataTime) {
-			//get current target course
+			//set current target course
 			targetX = TargetScript.targetX;
 			targetZ = TargetScript.targetZ;
 			SendPlayerJsonData();
+
+			//vr headtracing
+			//SendHeadData(new Vector3(UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360)));
+
 			print ("send");
 			timer = 0;
 		}
@@ -113,7 +115,30 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 
-	//send receive player & muni data ------------------------------------------------
+	// send receive head positions data
+	public void SendHeadData(Vector3 rot){
+		Dictionary<string,string> json = new Dictionary<string, string>();
+		json.Add("id",PlayerScript.id);
+		json.Add("rotX",rot.x.ToString());
+		json.Add("rotY",rot.y.ToString());
+		json.Add("rotZ",rot.y.ToString());
+		socket.Emit("head",new JSONObject(json));
+	}
+
+	// receive head data
+	public void receiveHeadData(SocketIOEvent e){
+		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
+		JSONObject jo = e.data as JSONObject;
+		
+		//andere spieler
+
+		string playerID = jo["id"].str;
+		Vector3 playerRotation = new Vector3 (float.Parse(jo["rotX"].str),float.Parse(jo["rotY"].str),float.Parse(jo["rotZ"].str));
+		PlayerScript.headRotation = playerRotation;
+	}
+
+
+	//send receive player data ------------------------------------------------
 
 	// send player data
 	public void SendPlayerJsonData(){

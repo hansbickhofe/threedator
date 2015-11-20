@@ -146,6 +146,14 @@ public class Settings : MonoBehaviour {
 
 	// on button click "GO"
 	public void StartGame(){
+		PlayerPrefs.SetString("VR", "off");
+		if (dataValidated) Application.LoadLevel ("Threedator");
+		else ErrorTxt.GetComponent<Text>().text = "No login data set!";
+	}
+
+	// on button click "GO VR"
+	public void StartGameVR(){
+		PlayerPrefs.SetString("VR", "on");
 		if (dataValidated) Application.LoadLevel ("Threedator");
 		else ErrorTxt.GetComponent<Text>().text = "No login data set!";
 	}
