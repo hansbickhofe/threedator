@@ -132,6 +132,14 @@ io.on('connection', function(socket){
     io.emit('water',msg);
   });
 
+// getscores keyword unity
+  socket.on('scores', function(msg){
+    if(msg){
+      console.log('scores: (' + msg + ')');
+    }
+    io.emit('scores',msg);
+  });
+
 // pick up munition
   socket.on('pickedmuni', function(msg) {
     if(msg) {
