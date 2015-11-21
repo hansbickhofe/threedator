@@ -310,6 +310,7 @@ namespace SocketIO
 				#if SOCKET_IO_DEBUG
 				debugMethod.Invoke(ex.ToString());
 				#endif
+				print (ex);
 			}
 		}
 
@@ -401,6 +402,7 @@ namespace SocketIO
 					#if SOCKET_IO_DEBUG
 					debugMethod.Invoke(ex.ToString());
 					#endif
+					print (ex);
 				}
 			}
 		}

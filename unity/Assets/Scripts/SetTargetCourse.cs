@@ -17,14 +17,14 @@ public class SetTargetCourse : MonoBehaviour {
 	public float targetZ;
 
 	//new course every three seconds 
-	bool canTouch; 
+	//bool canTouch; 
 	public float waitTime; // 3.0f
 	float time;
 	bool newCourse;
 
 	// Use this for initialization
 	void Start () {
-		canTouch = true;
+		//canTouch = true;
 		time = 3;
 		Waypoint.transform.Find("Marker").gameObject.SetActive(false); // real waypoint
 	}

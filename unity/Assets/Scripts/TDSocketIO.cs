@@ -55,14 +55,17 @@ public class TDSocketIO : MonoBehaviour
 	float m_posX;
 	float m_posZ;
 
-
 	// process player data
 	public List<Ship> allShips = new List<Ship>();
 	int playerArraySize;
 	public int lifeTime;
 	float timer;
 	public float sendDataTime;
-	public int speed;
+	//public int speed;
+
+	// process head movement data
+	float headTimer;
+	public float sendHeadMotionTime;
 	
 	// process torpedo data
 	public List<Torpedo> allTorpedos = new List<Torpedo>();
@@ -94,11 +97,16 @@ public class TDSocketIO : MonoBehaviour
 			targetX = TargetScript.targetX;
 			targetZ = TargetScript.targetZ;
 			SendPlayerJsonData();
-
-			//vr headtracing
-			//SendHeadData(new Vector3(UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360),UnityEngine.Random.Range(0,360)));
-
 			timer = 0;
+		}
+
+		//vr headtracking
+		headTimer += Time.deltaTime;
+		
+		if (headTimer > sendHeadMotionTime) {
+			//vr headtracing
+			SendHeadData(PlayerScript.VRCamHead.transform.eulerAngles);
+			headTimer = 0;
 		}
 	}
 
@@ -114,13 +122,13 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 
-	// send receive head positions data
+	// send receive head positions data ----------------------------------------------
 	public void SendHeadData(Vector3 rot){
 		Dictionary<string,string> json = new Dictionary<string, string>();
 		json.Add("id",PlayerScript.id);
 		json.Add("rotX",rot.x.ToString());
 		json.Add("rotY",rot.y.ToString());
-		json.Add("rotZ",rot.y.ToString());
+		json.Add("team",PlayerScript.team.ToString());
 		socket.Emit("head",new JSONObject(json));
 	}
 
@@ -130,10 +138,17 @@ public class TDSocketIO : MonoBehaviour
 		JSONObject jo = e.data as JSONObject;
 		
 		//andere spieler
+		Vector3 headRotation = new Vector3 (float.Parse(jo["rotX"].str),float.Parse(jo["rotY"].str),0f);
 
-		string playerID = jo["id"].str;
-		Vector3 playerRotation = new Vector3 (float.Parse(jo["rotX"].str),float.Parse(jo["rotY"].str),float.Parse(jo["rotZ"].str));
-		PlayerScript.headRotation = playerRotation;
+		// rotation auf farben verteilen
+		if (jo ["id"].str != PlayerScript.id) {
+			if (jo["team"].str == "red") PlayerScript.redHeadRotation = headRotation;
+			if (jo["team"].str == "green") PlayerScript.greenHeadRotation = headRotation;
+			if (jo["team"].str == "blue") PlayerScript.blueHeadRotation = headRotation;
+		}
+
+		//PlayerScript.greenHeadRotation = headRotation;
+
 	}
 
 
@@ -414,8 +429,18 @@ public class TDSocketIO : MonoBehaviour
 	}
 
 	void ProcessHitData(string torpedo, string ship){
+		// getroffen worden
 		if (ship == PlayerScript.id) {
 			print ("u got hit by: "+torpedo);
+			PlayerScript.HitMsg.GetComponent<TextMesh>().text = "u got hit by:\nID: "+torpedo.ToString();
+		}
+
+		//treffer!
+		if (torpedo == PlayerScript.id) {
+			print ("you scored against!: "+ship);
+			PlayerScript.score += 100;
+			PlayerScript.ScoreMsg.GetComponent<TextMesh>().text = PlayerScript.score.ToString();
+			PlayerScript.HitMsg.GetComponent<TextMesh>().text = "perfect hit!\nID: "+ship.ToString();
 		}
 	}
 
