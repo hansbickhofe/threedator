@@ -125,7 +125,7 @@ namespace SocketIO
 
 		public void Update()
 		{
-			lock(eventQueueLock){ 
+			lock(eventQueueLock){
 				while(eventQueue.Count > 0){
 					EmitEvent(eventQueue.Dequeue());
 				}
@@ -166,7 +166,7 @@ namespace SocketIO
 		#endregion
 
 		#region Public Interface
-		
+
 		public void Connect()
 		{
 			connected = true;
@@ -270,14 +270,14 @@ namespace SocketIO
 				} else {
 					thPinging = true;
 					thPong =  false;
-					
+
 					EmitPacket(new Packet(EnginePacketType.PING));
 					pingStart = DateTime.Now;
-					
+
 					while(webSocket.IsConnected && thPinging && (DateTime.Now.Subtract(pingStart).TotalSeconds < timeoutMilis)){
 						Thread.Sleep(200);
 					}
-					
+
 					if(!thPong){
 						webSocket.Close();
 					}
@@ -303,7 +303,7 @@ namespace SocketIO
 			#if SOCKET_IO_DEBUG
 			debugMethod.Invoke("[SocketIO] " + packet);
 			#endif
-			
+
 			try {
 				ws.Send(encoder.Encode(packet));
 			} catch(SocketIOException ex) {
@@ -354,7 +354,7 @@ namespace SocketIO
 			thPong = true;
 			thPinging = false;
 		}
-		
+
 		private void HandleMessage(Packet packet)
 		{
 			if(packet.json == null) { return; }
