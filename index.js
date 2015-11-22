@@ -13,6 +13,10 @@ var io = require('socket.io')(http);
 var PORT = process.env.PORT || 3000;
 var https = require('https');
 var querystring = require('querystring');
+var redis = require('redis');
+var client = redis.createClient(); //creates a new client
+var passwordhasher = require('password-hasher');
+
 //static
 app.use(express.static(__dirname + '/public'));
 
@@ -71,6 +75,10 @@ function blockMuni(muniID,playerID) {
       io.emit('newmuni', munition[muniID]);
     }, 3000);
 }
+
+client.on('connect', function() {
+    console.log('connected');
+});
 
 io.on('connection', function(socket){
 
@@ -149,6 +157,7 @@ io.on('connection', function(socket){
         // console.log("blocking "+ k_ID) ;
         blockMuni(k_ID,p_ID);
       }
+    client.incr('muni'+p_ID);
     io.emit('pickedmuni',msg);
     }
   });
@@ -157,36 +166,8 @@ io.on('connection', function(socket){
   socket.on('gothit', function(msg){
     if(msg){
     	console.log('gothit: (' + msg + ')');
+      client.incr('gothit'+msg.torpedoID);
     	io.emit('gothit',msg);
-
-      /*
-	var post_data = querystring.stringify({
-  			'torpedoID' : msg.torpedID,
-  			'shipID': msg.shipID
-  			});
-      // optionen für player score Appengine Backend Requests
-      var score_post_options = {
-        host: 'threedator.appspot.com',
-        port: '443',
-        path: '/user.score',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(post_data)
-        }
-      };
-      var serverReply;
-      var post_req = https.request(score_post_options, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-          var jsonResponse = JSON.parse(chunk);
-            if (jsonResponse[0].logonack) {
-              logonstatus = jsonResponse[0].logonack;
-              serverReply = "logonack";
-            }
-          io.emit(emitMsg, JSON.stringify(logonstatus));
-        });
-      }); */
     }
   });
 
