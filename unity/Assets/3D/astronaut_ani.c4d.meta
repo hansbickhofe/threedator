@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: f0d0e9b07b6656040bba3b984e294b81
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: armL
     100002: armR
@@ -38,6 +38,7 @@ ModelImporter:
     100064: toeL_Ziel
     100066: toeR
     100068: toeR_Ziel
+    100070: CINEMA_4D_Editor
     400000: armL
     400002: armR
     400004: //RootNode
@@ -73,6 +74,7 @@ ModelImporter:
     400064: toeL_Ziel
     400066: toeR
     400068: toeR_Ziel
+    400070: CINEMA_4D_Editor
     2300000: body
     3300000: body
     4300000: body
@@ -81,7 +83,20 @@ ModelImporter:
     4300006: armR
     4300008: beinL
     4300010: beinR
-    7400000: C4D Animation Take
+    7400000: fly
+    7400002: idle
+    7400004: start_walk
+    7400006: walk
+    7400008: stop_walk
+    7400010: start
+    7400012: land
+    7400014: salto
+    7400016: schraube
+    7400018: sit_down
+    7400020: stand_up
+    7400022: lay_down
+    7400024: get_up
+    7400026: happy
     9500000: //RootNode
     11100000: //RootNode
     13700000: armL
@@ -98,6 +113,10 @@ ModelImporter:
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -106,17 +125,17 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: C4D Animation Take
+      name: idle
       takeName: C4D Animation Take
-      firstFrame: 70
-      lastFrame: 100
+      firstFrame: 0
+      lastFrame: 10
       wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 1
-      loopTime: 1
-      loopBlend: 1
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -130,6 +149,8 @@ ModelImporter:
       events: []
       transformMask:
       - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
         weight: 1
       - path: fingerL_Ziel
         weight: 1
@@ -149,8 +170,6 @@ ModelImporter:
         weight: 1
       - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
         weight: 1
-      - path: naut/body/armL/Skin_2
-        weight: 1
       - path: naut/body/armR
         weight: 1
       - path: naut/body/armR/shoulderR
@@ -160,8 +179,6 @@ ModelImporter:
       - path: naut/body/armR/shoulderR/elbowR/handR
         weight: 1
       - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
-        weight: 1
-      - path: naut/body/armR/Skin_3
         weight: 1
       - path: naut/body/beinL
         weight: 1
@@ -173,7 +190,93 @@ ModelImporter:
         weight: 1
       - path: naut/body/beinL/hipL/kneeL/footL/toeL
         weight: 1
-      - path: naut/body/beinL/Skin_4
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: start_walk
+      takeName: C4D Animation Take
+      firstFrame: 11
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
         weight: 1
       - path: naut/body/beinR
         weight: 1
@@ -185,7 +288,93 @@ ModelImporter:
         weight: 1
       - path: naut/body/beinR/hipR/kneeR/footR/toeR
         weight: 1
-      - path: naut/body/beinR/Skin_5
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: walk
+      takeName: C4D Animation Take
+      firstFrame: 21
+      lastFrame: 50
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
         weight: 1
       - path: naut/body/head
         weight: 1
@@ -193,7 +382,973 @@ ModelImporter:
         weight: 1
       - path: naut/body/head/neck/head_2
         weight: 1
-      - path: naut/body/head/Skin
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: stop_walk
+      takeName: C4D Animation Take
+      firstFrame: 51
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: start
+      takeName: C4D Animation Take
+      firstFrame: 61
+      lastFrame: 70
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: fly
+      takeName: C4D Animation Take
+      firstFrame: 71
+      lastFrame: 100
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: land
+      takeName: C4D Animation Take
+      firstFrame: 101
+      lastFrame: 110
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: salto
+      takeName: C4D Animation Take
+      firstFrame: 111
+      lastFrame: 130
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: schraube
+      takeName: C4D Animation Take
+      firstFrame: 131
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: sit_down
+      takeName: C4D Animation Take
+      firstFrame: 151
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: stand_up
+      takeName: C4D Animation Take
+      firstFrame: 161
+      lastFrame: 170
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: lay_down
+      takeName: C4D Animation Take
+      firstFrame: 171
+      lastFrame: 180
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: get_up
+      takeName: C4D Animation Take
+      firstFrame: 181
+      lastFrame: 190
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
+        weight: 1
+      - path: toeL_Ziel
+        weight: 1
+      - path: toeR_Ziel
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: happy
+      takeName: C4D Animation Take
+      firstFrame: 191
+      lastFrame: 200
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: CINEMA_4D_Editor
+        weight: 1
+      - path: fingerL_Ziel
+        weight: 1
+      - path: fingerR_Ziel
+        weight: 1
+      - path: naut
+        weight: 1
+      - path: naut/body
+        weight: 1
+      - path: naut/body/armL
+        weight: 1
+      - path: naut/body/armL/shoulderL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL
+        weight: 1
+      - path: naut/body/armL/shoulderL/elbowL/handL/fingerL
+        weight: 1
+      - path: naut/body/armR
+        weight: 1
+      - path: naut/body/armR/shoulderR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR
+        weight: 1
+      - path: naut/body/armR/shoulderR/elbowR/handR/fingerR
+        weight: 1
+      - path: naut/body/beinL
+        weight: 1
+      - path: naut/body/beinL/hipL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL
+        weight: 1
+      - path: naut/body/beinL/hipL/kneeL/footL/toeL
+        weight: 1
+      - path: naut/body/beinR
+        weight: 1
+      - path: naut/body/beinR/hipR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR
+        weight: 1
+      - path: naut/body/beinR/hipR/kneeR/footR/toeR
+        weight: 1
+      - path: naut/body/head
+        weight: 1
+      - path: naut/body/head/neck
+        weight: 1
+      - path: naut/body/head/neck/head_2
         weight: 1
       - path: toeL_Ziel
         weight: 1
@@ -212,11 +1367,13 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
@@ -235,7 +1392,11 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 1
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 
