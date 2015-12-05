@@ -13,7 +13,6 @@ public class SetTorpedoCourse : MonoBehaviour {
 
 	//target position
 	public GameObject Targetpoint;
-	public GameObject FloatMarker;
 	public float targetX;
 	public float targetZ;
 
@@ -39,10 +38,7 @@ public class SetTorpedoCourse : MonoBehaviour {
 
 		//check mode and scale floating target down
 		if (time >= 0 && PlayerScript.raycastMode == "torpedo") {
-			FloatMarker.SetActive (true);
-			FloatMarker.transform.localScale = new Vector3 (time * 2f, .1f, time * 2f);
-		} else {
-			FloatMarker.SetActive (false);
+
 		}
 
 		//SetNewTorpedoCourse

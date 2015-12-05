@@ -13,8 +13,6 @@ public class PlayerData : MonoBehaviour {
 
 	// debug
 	public Canvas debugCanvas; 
-	public string clickText;
-	public string touchText;
 	public string hitPos;
 
 	public string id;

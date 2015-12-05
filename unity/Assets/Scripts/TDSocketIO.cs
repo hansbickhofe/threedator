@@ -21,8 +21,8 @@ public class TDSocketIO : MonoBehaviour
 	string id;
 	float posX;
 	float posZ;
-	float targetX;
-	float targetZ;
+	public float targetX;
+	public float targetZ;
 	int shipTime;
 
 	// torpedo
@@ -61,11 +61,6 @@ public class TDSocketIO : MonoBehaviour
 	public int lifeTime;
 	float timer;
 	public float sendDataTime;
-	//public int speed;
-
-	// process head movement data
-	float headTimer;
-	public float sendHeadMotionTime;
 	
 	// process torpedo data
 	public List<Torpedo> allTorpedos = new List<Torpedo>();
@@ -82,18 +77,18 @@ public class TDSocketIO : MonoBehaviour
 		socket.On ("torpedo",receiveTorpedoData);
 		socket.On ("gothit",receiveHitData);
 		socket.On ("water",receiveWaterData);
-		CreateMunition();
+		CreateMunition ();
 	}
 
 	public void Update(){
+		// allgemeiner timer um daten permament zu senden
+
 		//timer
 		timer += Time.deltaTime;
 
 		if (timer > sendDataTime) {
 			//set current target course
-			targetX = TargetScript.targetX;
-			targetZ = TargetScript.targetZ;
-			SendPlayerJsonData();
+			//SendPlayerJsonData();
 			timer = 0;
 		}
 	}
@@ -266,20 +261,15 @@ public class TDSocketIO : MonoBehaviour
 		playerArraySize = allShips.Count;
 
 		for (int i = 0; i<playerArraySize; i++){
-			//print("hello"+arraySize);
 
 			if (allShips[i].id == r_id) {
-				//existing ship pos updaten
+				//existing ship target pos updaten
 
 				ShipMove ShipScript = allShips[i].ship.GetComponent<ShipMove>();
-				// evtl später daten ins array schreiben. k.a. was schneller ist
-				// ShipScript.posX = r_posX;
-				// ShipScript.posZ = r_posX;
 				ShipScript.targetX = r_targetX;
 				ShipScript.targetZ = r_targetZ;
 				allShips[i].time = r_shipTime;
-
-				//print(id+": is already there!");
+			
 				idFound = true;
 				break;
 			}
@@ -313,7 +303,7 @@ public class TDSocketIO : MonoBehaviour
 				// tag für Ememy setzen
 				newShip.tag = "Enemy";
 
-				// später color und name der gegner mitsenden
+				// random color // später color und name der gegner mitsenden
 				playerColor = new Color (UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f),UnityEngine.Random.Range(0.0f,1.0f));
 				playername = "?";
 			}
