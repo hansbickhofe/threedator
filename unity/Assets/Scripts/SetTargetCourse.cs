@@ -49,40 +49,7 @@ public class SetTargetCourse : MonoBehaviour {
 			newCourse = true;
 		}
 
-		// vr mode vs mouse/touch mode
-		if (PlayerScript.VRmode == "on"){
-			if (PlayerScript.raycastMode == "waypoint" && Physics.Raycast (PlayerScript.VRCamHead.transform.position, PlayerScript.VRCamHead.transform.forward, out hit))
-			{
-				// auf muni cube schauen um mode zu wechseln
-				if (hit.rigidbody != null && hit.rigidbody.tag == "MuniCube"){
-					PlayerScript.raycastMode = "torpedo";
-					print (PlayerScript.raycastMode);
-				}
-
-				if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
-					targetX = hit.point.x;
-					targetZ = hit.point.z;
-
-					newCourse = false;
-					time = 3;
-					
-					//set visible waypoint
-					Waypoint.transform.Find("Marker").gameObject.SetActive(true);
-					Waypoint.transform.position = new Vector3(targetX,.1f,targetZ);
-					
-					//debug
-					//PlayerScript.hitPos = targetX.ToString()+" "+targetZ.ToString();
-				} else if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == false){
-					//waypointmarker frei bewegen
-					FloatMarker.transform.position = new Vector3(hit.point.x,.1f,hit.point.z);
-					//Debug.DrawRay (PlayerScript.VRCamHead.transform.position, PlayerScript.VRCamHead.transform.forward * 100, Color.green);
-					
-				}
-			}
-		} else {
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		}
-
+		//ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 		//mouse click
 		if (Input.GetMouseButtonDown(0)){

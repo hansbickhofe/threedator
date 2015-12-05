@@ -76,9 +76,6 @@ public class TDSocketIO : MonoBehaviour
 		// connect to socketIO
 		GameObject go = GameObject.Find("SocketIO");
 		socket = go.GetComponent<SocketIOComponent>();
-
-		socket.On ("head",receiveHeadData); // VR kopfbewegungen
-
 		socket.On ("player",receiveSocketData);
 		socket.On ("newmuni",receiveNewMuniData); // only receive no send
 		socket.On ("pickedmuni",receivePickedMuniData);
@@ -99,56 +96,17 @@ public class TDSocketIO : MonoBehaviour
 			SendPlayerJsonData();
 			timer = 0;
 		}
-
-		//vr headtracking
-		headTimer += Time.deltaTime;
-		
-		if (headTimer > sendHeadMotionTime) {
-			//vr headtracing
-			SendHeadData(PlayerScript.VRCamHead.transform.eulerAngles);
-			headTimer = 0;
-		}
 	}
 
 	// create 3 initial muni packs
 	public void CreateMunition(){
-		for (int i=0; i<muniAmmount; i++){
-			GameObject newMuni = Instantiate(Muni, Vector3.zero, Quaternion.identity) as GameObject;
-			newMuni.GetComponent<Munition>().ID = (i+1)*333; //ID setzen
-			newMuni.SetActive(false);
-			MuniArray[i] = newMuni; // push to array
-			newMuni.transform.parent = GameObject.Find("Munition").transform; //make child of empty game object
+		for (int i=0; i<muniAmmount; i++) {
+			GameObject newMuni = Instantiate (Muni, Vector3.zero, Quaternion.identity) as GameObject;
+			newMuni.GetComponent<Munition> ().ID = (i + 1) * 333; //ID setzen
+			newMuni.SetActive (false);
+			MuniArray [i] = newMuni; // push to array
+			newMuni.transform.parent = GameObject.Find ("Munition").transform; //make child of empty game object
 		}
-	}
-
-
-	// send receive head positions data ----------------------------------------------
-	public void SendHeadData(Vector3 rot){
-		Dictionary<string,string> json = new Dictionary<string, string>();
-		json.Add("id",PlayerScript.id);
-		json.Add("rotX",rot.x.ToString());
-		json.Add("rotY",rot.y.ToString());
-		json.Add("team",PlayerScript.team.ToString());
-		socket.Emit("head",new JSONObject(json));
-	}
-
-	// receive head data
-	public void receiveHeadData(SocketIOEvent e){
-		Debug.Log("[SocketIO] data received: " + e.name + " " + e.data);
-		JSONObject jo = e.data as JSONObject;
-		
-		//andere spieler
-		Vector3 headRotation = new Vector3 (float.Parse(jo["rotX"].str),float.Parse(jo["rotY"].str),0f);
-
-		// rotation auf farben verteilen
-		if (jo ["id"].str != PlayerScript.id) {
-			if (jo["team"].str == "red") PlayerScript.redHeadRotation = headRotation;
-			if (jo["team"].str == "green") PlayerScript.greenHeadRotation = headRotation;
-			if (jo["team"].str == "blue") PlayerScript.blueHeadRotation = headRotation;
-		}
-
-		//PlayerScript.greenHeadRotation = headRotation;
-
 	}
 
 
@@ -432,15 +390,12 @@ public class TDSocketIO : MonoBehaviour
 		// getroffen worden
 		if (ship == PlayerScript.id) {
 			print ("u got hit by: "+torpedo);
-			PlayerScript.HitMsg.GetComponent<TextMesh>().text = "u got hit by:\nID: "+torpedo.ToString();
 		}
 
 		//treffer!
 		if (torpedo == PlayerScript.id) {
 			print ("you scored against!: "+ship);
 			PlayerScript.score += 100;
-			PlayerScript.ScoreMsg.GetComponent<TextMesh>().text = PlayerScript.score.ToString();
-			PlayerScript.HitMsg.GetComponent<TextMesh>().text = "perfect hit!\nID: "+ship.ToString();
 		}
 	}
 

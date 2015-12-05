@@ -50,37 +50,8 @@ public class SetTorpedoCourse : MonoBehaviour {
 			PlayerScript.muni--;
 			newCourse = true;
 		}
-		
 
-		// vr mode vs mouse/touch mode
-		if (PlayerScript.VRmode == "on"){
-			if (PlayerScript.raycastMode == "torpedo" && Physics.Raycast (PlayerScript.VRCamHead.transform.position, PlayerScript.VRCamHead.transform.forward, out hit))
-			{
-				if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == true){
-					targetX = hit.point.x;
-					targetZ = hit.point.z;
-					
-					newCourse = false;
-					time = 3;
-					
-					//set visible torpedo target
-					Targetpoint.transform.Find("Marker").gameObject.SetActive(true);
-					Targetpoint.transform.position = new Vector3(targetX,.1f,targetZ);
-
-					//send to server
-					SocketScript.SetTorpedoTarget(Targetpoint.transform.position);
-
-					// nach feuern raycast mode wieder auf waypoint setzen
-					PlayerScript.raycastMode = "waypoint";
-
-				} else if (hit.rigidbody != null && hit.rigidbody.tag == "Background" && newCourse == false){
-					//torpedomarker frei bewegen
-					FloatMarker.transform.position = new Vector3(hit.point.x,.1f,hit.point.z);
-				}
-			}
-		} else {
-			ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		}
+		//ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 		//mouse click
 		if (Input.GetMouseButtonDown(1)){ // right mouse button
