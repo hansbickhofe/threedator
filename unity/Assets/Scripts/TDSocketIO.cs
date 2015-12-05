@@ -35,7 +35,7 @@ public class TDSocketIO : MonoBehaviour
 	Vector3 spawnPosition;
 
 	// received player data
-	public GameObject r_ship;
+	//public GameObject r_ship;
 	string r_id;
 	float r_posX;
 	float r_posZ;
