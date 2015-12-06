@@ -29,7 +29,6 @@ public class SetTargetCourse : MonoBehaviour {
 		//timer
 		newCourse = false;
 		time -= Time.deltaTime;
-			
 		
 		//SetNewCourse
 		if (time <= 0 && newCourse == false){

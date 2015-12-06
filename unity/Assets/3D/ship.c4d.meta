@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: c5b5b2829f64e2349b667c04db4a634a
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 18
   fileIDToRecycleName:
     100000: body
     100002: Deckfl__che_1
@@ -58,6 +58,28 @@ ModelImporter:
     100104: W__rfel_3
     100106: W__rfel_4
     100108: W__rfel_5
+    100110: CINEMA_4D_Editor
+    100112: "Deckfl\xE4che_1"
+    100114: "Deckfl\xE4che_1_2"
+    100116: "Deckfl\xE4che_1_3"
+    100118: "Deckfl\xE4che_1_4"
+    100120: "Deckfl\xE4che_1_5"
+    100122: "Deckfl\xE4che_1_6"
+    100124: "Deckfl\xE4che_2"
+    100126: "Deckfl\xE4che_2_2"
+    100128: "Deckfl\xE4che_2_3"
+    100130: "Deckfl\xE4che_2_4"
+    100132: "Deckfl\xE4che_2_5"
+    100134: "Deckfl\xE4che_2_6"
+    100136: "fl\xFCgel_0"
+    100138: "fl\xFCgel_1"
+    100140: "fl\xFCgel_2"
+    100142: "fl\xFCgel_3"
+    100144: ship
+    100146: "W\xFCrfel"
+    100148: "W\xFCrfel_2"
+    100150: "W\xFCrfel_3"
+    100152: "W\xFCrfel_4"
     400000: body
     400002: Deckfl__che_1
     400004: Deckfl__che_1_2
@@ -113,6 +135,28 @@ ModelImporter:
     400104: W__rfel_3
     400106: W__rfel_4
     400108: W__rfel_5
+    400110: CINEMA_4D_Editor
+    400112: "Deckfl\xE4che_1"
+    400114: "Deckfl\xE4che_1_2"
+    400116: "Deckfl\xE4che_1_3"
+    400118: "Deckfl\xE4che_1_4"
+    400120: "Deckfl\xE4che_1_5"
+    400122: "Deckfl\xE4che_1_6"
+    400124: "Deckfl\xE4che_2"
+    400126: "Deckfl\xE4che_2_2"
+    400128: "Deckfl\xE4che_2_3"
+    400130: "Deckfl\xE4che_2_4"
+    400132: "Deckfl\xE4che_2_5"
+    400134: "Deckfl\xE4che_2_6"
+    400136: "fl\xFCgel_0"
+    400138: "fl\xFCgel_1"
+    400140: "fl\xFCgel_2"
+    400142: "fl\xFCgel_3"
+    400144: ship
+    400146: "W\xFCrfel"
+    400148: "W\xFCrfel_2"
+    400150: "W\xFCrfel_3"
+    400152: "W\xFCrfel_4"
     2300000: body
     2300002: Deckfl__che_1
     2300004: Deckfl__che_1_2
@@ -142,6 +186,23 @@ ModelImporter:
     2300052: W__rfel_2
     2300054: W__rfel_3
     2300056: W__rfel_4
+    2300058: "Deckfl\xE4che_1"
+    2300060: "Deckfl\xE4che_1_2"
+    2300062: "Deckfl\xE4che_1_3"
+    2300064: "Deckfl\xE4che_1_4"
+    2300066: "Deckfl\xE4che_1_5"
+    2300068: "Deckfl\xE4che_1_6"
+    2300070: "Deckfl\xE4che_2"
+    2300072: "Deckfl\xE4che_2_2"
+    2300074: "Deckfl\xE4che_2_3"
+    2300076: "Deckfl\xE4che_2_4"
+    2300078: "Deckfl\xE4che_2_5"
+    2300080: "Deckfl\xE4che_2_6"
+    2300082: Extrude_NURBS_1_3
+    2300084: "W\xFCrfel"
+    2300086: "W\xFCrfel_2"
+    2300088: "W\xFCrfel_3"
+    2300090: "W\xFCrfel_4"
     3300000: body
     3300002: Deckfl__che_1
     3300004: Deckfl__che_1_2
@@ -171,6 +232,23 @@ ModelImporter:
     3300052: W__rfel_2
     3300054: W__rfel_3
     3300056: W__rfel_4
+    3300058: "Deckfl\xE4che_1"
+    3300060: "Deckfl\xE4che_1_2"
+    3300062: "Deckfl\xE4che_1_3"
+    3300064: "Deckfl\xE4che_1_4"
+    3300066: "Deckfl\xE4che_1_5"
+    3300068: "Deckfl\xE4che_1_6"
+    3300070: "Deckfl\xE4che_2"
+    3300072: "Deckfl\xE4che_2_2"
+    3300074: "Deckfl\xE4che_2_3"
+    3300076: "Deckfl\xE4che_2_4"
+    3300078: "Deckfl\xE4che_2_5"
+    3300080: "Deckfl\xE4che_2_6"
+    3300082: Extrude_NURBS_1_3
+    3300084: "W\xFCrfel"
+    3300086: "W\xFCrfel_2"
+    3300088: "W\xFCrfel_3"
+    3300090: "W\xFCrfel_4"
     4300000: Kugel
     4300002: Kegel
     4300004: Extrude_NURBS_1
@@ -200,6 +278,23 @@ ModelImporter:
     4300052: Kapsel_4
     4300054: W__rfel_4
     4300056: body
+    4300058: "Deckfl\xE4che_1"
+    4300060: "Deckfl\xE4che_2"
+    4300062: "Deckfl\xE4che_1_2"
+    4300064: "Deckfl\xE4che_2_2"
+    4300066: "Deckfl\xE4che_1_3"
+    4300068: "Deckfl\xE4che_2_3"
+    4300070: "Deckfl\xE4che_1_4"
+    4300072: "Deckfl\xE4che_2_4"
+    4300074: "Deckfl\xE4che_1_5"
+    4300076: "Deckfl\xE4che_2_5"
+    4300078: Extrude_NURBS_1_3
+    4300080: "Deckfl\xE4che_1_6"
+    4300082: "Deckfl\xE4che_2_6"
+    4300084: "W\xFCrfel"
+    4300086: "W\xFCrfel_2"
+    4300088: "W\xFCrfel_3"
+    4300090: "W\xFCrfel_4"
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -210,6 +305,10 @@ ModelImporter:
     bakeSimulation: 0
     optimizeGameObjects: 0
     motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -220,7 +319,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: .00999999978
+    globalScale: .0500000007
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -228,11 +327,13 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
+    keepQuads: 0
     weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     splitTangentsAcrossUV: 1
@@ -251,7 +352,11 @@ ModelImporter:
     legStretch: .0500000007
     feetSpacing: 0
     rootMotionBoneName: 
+    hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
+  humanoidOversampling: 1
   additionalBone: 0
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -152,7 +152,7 @@ public class TDSocketIO : MonoBehaviour
 		int arrayPos = (int.Parse (m_id) / 333) - 1;
 		//show muni & set position
 		MuniArray[arrayPos].SetActive (true);
-		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .05f, m_posZ);
+		MuniArray[arrayPos].transform.position = new Vector3 (m_posX, .5f, m_posZ);
 	}
 
 
@@ -265,9 +265,10 @@ public class TDSocketIO : MonoBehaviour
 			if (allShips[i].id == r_id) {
 				//existing ship target pos updaten
 
-				ShipMove ShipScript = allShips[i].ship.GetComponent<ShipMove>();
-				ShipScript.targetX = r_targetX;
-				ShipScript.targetZ = r_targetZ;
+				Move MoveScript = allShips[i].ship.GetComponent<Move>();
+				MoveScript.targetX = r_targetX;
+				MoveScript.targetZ = r_targetZ;
+				MoveScript.isMoving = true;
 				allShips[i].time = r_shipTime;
 			
 				idFound = true;

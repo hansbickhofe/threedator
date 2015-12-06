@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ShipMove : MonoBehaviour {
+public class Move : MonoBehaviour {
 
 	public PlayerData PlayerScript;
 
@@ -9,6 +9,8 @@ public class ShipMove : MonoBehaviour {
 	[HideInInspector] public float targetZ;
 	
 	float stepMove;
+
+	public bool isMoving = false;
 
 	void Start(){
 		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
@@ -25,8 +27,11 @@ public class ShipMove : MonoBehaviour {
 		}
 
 		//move
+		Vector3 targetPos = new Vector3 (targetX, 0, targetZ);
 		stepMove = PlayerScript.speed * Time.deltaTime;
-		transform.position = Vector3.MoveTowards (transform.position, new Vector3 (targetX, 0, targetZ), stepMove);
+		transform.position = Vector3.MoveTowards (transform.position, targetPos, stepMove);
+
+
 		
 //		//rotate
 		Vector3 targetDir = new Vector3 (targetX, 0, targetZ) - transform.position;
@@ -40,7 +45,8 @@ public class ShipMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Waypoint") {
-			//other.gameObject.transform.Find("WaypointMarker").gameObject.SetActive(false);
+			isMoving = false;
+			other.gameObject.transform.Find("Marker").gameObject.SetActive(false);
 		}
 	}
 }
