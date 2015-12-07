@@ -37,6 +37,7 @@ public class TDSocketIO : MonoBehaviour
 	// received player data
 	//public GameObject r_ship;
 	string r_id;
+	string r_team;
 	float r_posX;
 	float r_posZ;
 	float r_targetX;
@@ -111,6 +112,7 @@ public class TDSocketIO : MonoBehaviour
 	public void SendPlayerJsonData(){
 		Dictionary<string,string> json = new Dictionary<string, string>();
 		json.Add("id",PlayerScript.id);
+		json.Add("team",PlayerScript.team);
 		json.Add("posX",posX.ToString());
 		json.Add("posZ",posZ.ToString());
 		json.Add("targetX",targetX.ToString());
@@ -126,6 +128,7 @@ public class TDSocketIO : MonoBehaviour
 
 		//andere spieler
 		r_id = jo["id"].str;
+		r_team = jo["team"].str;
 		r_posX = float.Parse(jo["posX"].str);
 		r_posZ = float.Parse(jo["posZ"].str);
 		r_targetX = float.Parse(jo["targetX"].str);

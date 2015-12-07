@@ -26,7 +26,7 @@ public class Settings : MonoBehaviour {
 	InputField InputName;
 	InputField InputPW;
 	GameObject ButtonTeam;
-	InputField InputRoomID;
+	//InputField InputRoomID;
 	InputField InputUrl;
 
 	void Start () {
