@@ -151,13 +151,6 @@ public class Settings : MonoBehaviour {
 		else ErrorTxt.GetComponent<Text>().text = "No login data set!";
 	}
 
-	// on button click "GO VR"
-	public void StartGameVR(){
-		PlayerPrefs.SetString("VR", "on");
-		if (dataValidated) Application.LoadLevel ("Threedator");
-		else ErrorTxt.GetComponent<Text>().text = "No login data set!";
-	}
-
 	public void ClearScores(){
 		Text ButtonTeamText = ButtonTeam.GetComponentInChildren<Text>();
 		// clear input fields
