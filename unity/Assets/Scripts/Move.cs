@@ -4,6 +4,9 @@ using System.Collections;
 public class Move : MonoBehaviour {
 
 	public PlayerData PlayerScript;
+	public GameObject Cam;
+	public float camHeight = 15f;
+	public float camDist = -15f;
 
 	[HideInInspector] public float targetX;
 	[HideInInspector] public float targetZ;
@@ -13,6 +16,7 @@ public class Move : MonoBehaviour {
 	public bool isMoving = false;
 
 	void Start(){
+		Cam = GameObject.Find ("Camera");
 		PlayerScript = GameObject.Find("_Main").GetComponent<PlayerData>();
 		transform.position = PlayerScript.position; //new Vector3 (posX, 0, posZ);
 	}
@@ -22,8 +26,8 @@ public class Move : MonoBehaviour {
 		//broadcast own position if ship is "player"
 
 		if (gameObject.tag == "Player") {
+			Cam.transform.position = new Vector3(transform.position.x, camHeight, transform.position.z-camDist);
 			PlayerScript.position = transform.position;
-			//print ("pos: "+transform.position);
 		}
 
 		//move

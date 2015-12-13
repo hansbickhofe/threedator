@@ -21,7 +21,7 @@ public class SetTargetCourse : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//canTouch = true;
-		time = 3;
+		time = waitTime;
 	}
 	
 	void Update () {
@@ -49,7 +49,7 @@ public class SetTargetCourse : MonoBehaviour {
 		if (Physics.Raycast(ray, out hit)){
 			if (hit.rigidbody != null && hit.rigidbody.tag == "Background"){
 			    newCourse = false;
-			    time = 3;
+				time = waitTime;
 
 				//set visible waypoint
 				Waypoint.transform.Find("Marker").gameObject.SetActive(true);

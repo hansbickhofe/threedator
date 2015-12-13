@@ -37,7 +37,7 @@ public class TDSocketIO : MonoBehaviour
 	// received player data
 	//public GameObject r_ship;
 	string r_id;
-	string r_team;
+	//string r_team;
 	float r_posX;
 	float r_posZ;
 	float r_targetX;
@@ -128,7 +128,7 @@ public class TDSocketIO : MonoBehaviour
 
 		//andere spieler
 		r_id = jo["id"].str;
-		r_team = jo["team"].str;
+		//r_team = jo["team"].str;
 		r_posX = float.Parse(jo["posX"].str);
 		r_posZ = float.Parse(jo["posZ"].str);
 		r_targetX = float.Parse(jo["targetX"].str);
@@ -315,7 +315,6 @@ public class TDSocketIO : MonoBehaviour
 			//color und name setzen
 			newShip.GetComponent<Renderer>().material.SetColor("_Color", playerColor);
 			newShip.transform.Find("PlayerName").GetComponent<TextMesh>().text = playername;
-
 
 			// neue daten ins array schreiben
 			//allShips.Add(new Ship(newShip, r_id, r_posX, r_posZ, r_targetX, r_targetZ, r_shipTime));
